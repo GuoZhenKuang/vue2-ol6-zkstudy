@@ -1,7 +1,7 @@
 <template>
   <div id="map" class="map">
     <slot name="tool"></slot>
-      <div id="popup" class="ol-popup">
+      <div id="popup" class="ol-popup" v-show="isShowPopup">
             <a href="#" id="popup-closer" class="ol-popup-closer"></a>
             <div id="popup-content" class="popup-content"></div>
       </div>
@@ -34,7 +34,8 @@ export default {
         return {
             ol2dmap:null,
             overlay:null,
-            hightLightLayer:null
+            hightLightLayer:null,
+            isShowPopup:false
         }
     },
     methods:{
@@ -113,6 +114,7 @@ export default {
                 //点击其他地方的时会取消弹窗
                 if(_this.overlay){
                   _this.overlay.setPosition(undefined);
+                  _this.isShowPopup = false
                 }
               }
             })
@@ -167,6 +169,7 @@ export default {
         },
         addPopup(showLocation,feature){
           let _this= this
+          _this.isShowPopup = true
           //存储弹窗的dom元素
           let container = document.getElementById('popup')
           let closer = document.getElementById("popup-closer")

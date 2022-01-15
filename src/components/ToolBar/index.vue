@@ -1,10 +1,10 @@
 <!--
  * @Author: your name
  * @Date: 2022-01-12 18:01:20
- * @LastEditTime: 2022-01-14 11:51:21
- * @LastEditors: your name
+ * @LastEditTime: 2022-01-15 12:16:42
+ * @LastEditors: 阿匡
  * @Description: 
- * @FilePath: \vue2-zkstudy\src\components\ToolBar\index.vue
+ * @FilePath: \vue2-ol-zkstudy\src\components\ToolBar\index.vue
  * 可以输入预定的版权声明、个性签名、空行等
 -->
 <template>
@@ -37,8 +37,8 @@ export default {
 } */
   .toolBar{
     position: absolute;
-    top: 50px;
-    left: 50px;
+    top: 127px;
+    left: 144px;
     z-index: 100;
     width: 120px;
     box-shadow:0 7px 5px -5px #d0d0d0;

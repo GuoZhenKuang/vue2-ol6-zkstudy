@@ -1,3 +1,12 @@
+<!--
+ * @Author: 阿匡
+ * @Date: 2022-01-05 21:48:52
+ * @LastEditTime: 2022-01-15 12:14:47
+ * @LastEditors: 阿匡
+ * @Description: 
+ * @FilePath: \vue2-ol-zkstudy\src\views\Home.vue
+ * 仅为学习使用
+-->
 /*
  * @Author: mikey.zhaopeng 
  * @Date: 2022-01-14 11:23:14 
@@ -6,7 +15,8 @@
  */
 <template>
   <div class="home">
-    <Map>
+    <Header style="flex:1"/>
+    <Map style="flex:15">
       <template v-slot:tool>
         <ToolBar/>
       </template>
@@ -18,6 +28,7 @@
 <script>
 // @ is an alias to /src
 // import HelloWorld from '@/components/HelloWorld.vue'
+import Header from '@/components/Header'
 import Map from '@/components/Map/Map2D'
 import ToolBar from '@/components/ToolBar'
 export default {
@@ -32,7 +43,8 @@ export default {
   },
   components: {
     Map,
-    ToolBar
+    ToolBar,
+    Header
   },
   methods:{
     Anotherchange(){
@@ -54,6 +66,9 @@ export default {
 .home{
   width: 100%;
   height: 100%;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
   .qiehuan{
     position:absolute;
     z-index: 100;
