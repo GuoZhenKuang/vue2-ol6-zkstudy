@@ -1,19 +1,20 @@
 <!--
  * @Author: your name
  * @Date: 2022-01-12 18:01:20
- * @LastEditTime: 2022-01-15 12:16:42
+ * @LastEditTime: 2022-01-17 17:26:23
  * @LastEditors: 阿匡
- * @Description: 
+ * @Description: 工具栏
  * @FilePath: \vue2-ol-zkstudy\src\components\ToolBar\index.vue
- * 可以输入预定的版权声明、个性签名、空行等
 -->
 <template>
   <div class="toolBar">
     <SimpleTool/>
+    <Clear/>
   </div>
 </template>
 
 <script>
+import Clear from '@/components/ToolBar/Clear'
 import SimpleTool from '@/components/ToolBar/SimpleTool'
 export default {
   name:'ToolBar',
@@ -22,7 +23,7 @@ export default {
       
     }
   },
-  components:{SimpleTool}
+  components:{SimpleTool,Clear}
 
 }
 </script>
@@ -40,7 +41,7 @@ export default {
     top: 127px;
     left: 144px;
     z-index: 100;
-    width: 120px;
+    min-width: 140px;
     box-shadow:0 7px 5px -5px #d0d0d0;
     color: #7e7e7e;
     border: 1px solid #e3e3e3;

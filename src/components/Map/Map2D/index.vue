@@ -1,11 +1,13 @@
 <template>
+<div class="height100">
+<ToolBar/>
   <div id="map" class="map">
-    <slot name="tool"></slot>
       <div id="popup" class="ol-popup" v-show="isShowPopup">
             <a href="#" id="popup-closer" class="ol-popup-closer"></a>
             <div id="popup-content" class="popup-content"></div>
       </div>
   </div>
+</div>
 </template>
 
 <script>
@@ -22,20 +24,28 @@ import subscribeMixin from '@/components/Map/mixin/subscribeMixin'
 import executeMixin from '@/components/Map/mixin/executeMixin'
 //引入调用工具的方法
 import drawControl from '@/components/Map/mixin/drawControl'
+import ToolBar from '@/components/ToolBar'
+//控制图层的方法
+import layerControl from'@/components/Map/mixin/layerControl'
 
 export default {
     name:'initMap',
     mixins:[
       subscribeMixin,
       executeMixin,
-      drawControl
+      drawControl,
+      layerControl
     ],
+    components:{
+      ToolBar
+    },
     data() {
         return {
-            ol2dmap:null,
-            overlay:null,
-            hightLightLayer:null,
-            isShowPopup:false
+            ol2dmap:null,//ol二维地图的数据
+            popupOverlay:null,//专门用来弹窗的（覆盖物）的数据
+            hightLightLayer:null,//高亮图层的数据
+            isShowPopup:false,//控制弹窗是否显示
+            drawSource:null,//测量数据的source
         }
     },
     methods:{
@@ -78,46 +88,48 @@ export default {
             _this.ol2dmap.addLayer(vectorLayer)
             })
             
-           _this.ol2dmap.on("singleclick",function(evt){
-             if(_this.hightLightLayer){
-               //如果有高亮图层则清除
-               _this.ol2dmap.removeLayer(_this.hightLightLayer)
-             }
-                showPosition=evt.coordinate
-                //判断是否判断是否有要素，再给要素赋值
-              if(_this.ol2dmap.hasFeatureAtPixel(evt.pixel)){
-                let feature = _this.ol2dmap.getFeaturesAtPixel(evt.pixel)[0]
-                let featureData = _this.ol2dmap.getFeaturesAtPixel(evt.pixel)[0].getProperties()
-                //设置弹窗
-                _this.addPopup(showPosition,featureData)
-                //高亮要素
-                let hightLightStyle = new Style({
-                  stroke:new Stroke({
-                    color:'#33CCFF',
-                    lineDash:[4],
-                    width:3
-                  }),
-                  fill:new Fill({
-                    color:'rgba(255, 255, 0, 0.1)'
-                  })
-                })
-                _this.hightLightLayer = new VectorLayer({
-                  source:new VectorSource({
-                    features:[feature]
-                  }),
-                  zIndex:5,
-                  style:hightLightStyle
-                })
-                _this.ol2dmap.addLayer(_this.hightLightLayer)
+          //region 图查属性
+          //  _this.ol2dmap.on("singleclick",function(evt){
+          //    if(_this.hightLightLayer){
+          //      //如果有高亮图层则清除
+          //      _this.ol2dmap.removeLayer(_this.hightLightLayer)
+          //    }
+          //       showPosition=evt.coordinate
+          //       //判断是否判断是否有要素，再给要素赋值
+          //     if(_this.ol2dmap.hasFeatureAtPixel(evt.pixel)){
+          //       let feature = _this.ol2dmap.getFeaturesAtPixel(evt.pixel)[0]
+          //       let featureData = _this.ol2dmap.getFeaturesAtPixel(evt.pixel)[0].getProperties()
+          //       //设置弹窗
+          //       _this.addPopup(showPosition,featureData)
+          //       //高亮要素
+          //       let hightLightStyle = new Style({
+          //         stroke:new Stroke({
+          //           color:'#33CCFF',
+          //           lineDash:[4],
+          //           width:3
+          //         }),
+          //         fill:new Fill({
+          //           color:'rgba(255, 255, 0, 0.1)'
+          //         })
+          //       })
+          //       _this.hightLightLayer = new VectorLayer({
+          //         source:new VectorSource({
+          //           features:[feature]
+          //         }),
+          //         zIndex:5,
+          //         style:hightLightStyle
+          //       })
+          //       _this.ol2dmap.addLayer(_this.hightLightLayer)
 
-              }else{
-                //点击其他地方的时会取消弹窗
-                if(_this.overlay){
-                  _this.overlay.setPosition(undefined);
-                  _this.isShowPopup = false
-                }
-              }
-            })
+          //     }else{
+          //       //点击其他地方的时会取消弹窗
+          //       if(_this.popupOverlay){
+          //         _this.popupOverlay.setPosition(undefined);
+          //         _this.isShowPopup = false
+          //       }
+          //     }
+          //   })
+          //endregion
         },
         //返回累计确诊人数得样式的函数
         styleFunction(feature){
@@ -175,7 +187,7 @@ export default {
           let closer = document.getElementById("popup-closer")
           let content = document.getElementById('popup-content')
           //创建弹窗Overlay对象
-          _this.overlay = new Overlay({
+          _this.popupOverlay = new Overlay({
             element:container,
             autoPan:true,
             autoPanAnimation:{
@@ -183,7 +195,7 @@ export default {
             }
           });
           //将弹窗添加到map地图上
-          _this.ol2dmap.addOverlay(_this.overlay)
+          _this.ol2dmap.addOverlay(_this.popupOverlay)
           content.innerHTML=`
                       <table cellspacing="0" cellpadding="0" style="border:1px solid #d9d9d9;width:100%;font-size:12px">
                     <tr>
@@ -220,11 +232,11 @@ export default {
                     </tr>
                   </table>
           `
-          _this.overlay.setPosition(showLocation)//把 overlay 显示到指定的 x,y坐标
+          _this.popupOverlay.setPosition(showLocation)//把 popupOverlay 显示到指定的 x,y坐标
           
           //为弹窗相应一个关闭的函数
           closer.onclick = function(){
-            _this.overlay.setPosition(undefined);
+            _this.popupOverlay.setPosition(undefined);
             closer.blur();
             return false
           }
@@ -241,50 +253,4 @@ export default {
 <style lang="scss" scope>
 #map{height:100%;}
 /*隐藏ol的一些自带元素*/
-.ol-attribution,.ol-zoom { display: none;}
-.ol-popup {
-    position: absolute;
-    background-color: white;
-    -webkit-filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.2));
-    filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.2));
-    padding: 15px;
-    border-radius: 10px;
-    border: 1px solid #cccccc;
-    bottom: 12px;
-    left: -50px;
-}
-.ol-popup:after,
-.ol-popup:before {
-    top: 100%;
-    border: solid transparent;
-    content: " ";
-    height: 0;
-    width: 0;
-    position: absolute;
-    pointer-events: none;
-}
-.ol-popup:after {
-    border-top-color: white;
-    border-width: 10px;
-    left: 48px;
-    margin-left: -10px;
-}
-.ol-popup:before {
-    border-top-color: #cccccc;
-    border-width: 11px;
-    left: 48px;
-    margin-left: -11px;
-}
-.ol-popup-closer {
-    text-decoration: none;
-    position: absolute;
-    top: 2px;
-    right: 8px;
-}
-.popup-content {
-    width: 400px;
-}
-.ol-popup-closer:after {
-    content: "✖";
-}
 </style>

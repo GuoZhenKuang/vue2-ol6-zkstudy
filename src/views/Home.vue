@@ -1,27 +1,21 @@
 <!--
  * @Author: 阿匡
  * @Date: 2022-01-05 21:48:52
- * @LastEditTime: 2022-01-15 12:14:47
+ * @LastEditTime: 2022-01-16 11:30:08
  * @LastEditors: 阿匡
  * @Description: 
  * @FilePath: \vue2-ol-zkstudy\src\views\Home.vue
  * 仅为学习使用
 -->
-/*
- * @Author: mikey.zhaopeng 
- * @Date: 2022-01-14 11:23:14 
- * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2022-01-14 11:25:47
- */
 <template>
   <div class="home">
     <Header style="flex:1"/>
-    <Map style="flex:15">
+    <!-- <Map style="flex:15">
       <template v-slot:tool>
         <ToolBar/>
       </template>
-    </Map>
-      <router-view></router-view>
+    </Map> -->
+      <router-view style="flex:15"></router-view>
   </div>
 </template>
 
@@ -30,7 +24,7 @@
 // import HelloWorld from '@/components/HelloWorld.vue'
 import Header from '@/components/Header'
 import Map from '@/components/Map/Map2D'
-import ToolBar from '@/components/ToolBar'
+
 export default {
   name: 'Home',
   data() {
@@ -43,7 +37,6 @@ export default {
   },
   components: {
     Map,
-    ToolBar,
     Header
   },
   methods:{

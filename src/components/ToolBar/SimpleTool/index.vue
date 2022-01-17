@@ -1,8 +1,17 @@
+<!--
+ * @Author: 阿匡
+ * @Date: 2022-01-13 11:36:14
+ * @LastEditTime: 2022-01-17 17:28:41
+ * @LastEditors: 阿匡
+ * @Description: 
+ * @FilePath: \vue2-ol-zkstudy\src\components\ToolBar\SimpleTool\index.vue
+ * 仅为学习使用
+-->
 <template>
   <div class="simpleTool" @mouseover="onCurrentToolEnter" >
-    <i class="el-icon-s-tools"/>
+    <i class="el-icon-s-tools" style="padding:0 3px 0 0 "/>
     <span class="show-tool">
-        <span class="useTool">工具</span>
+        <span class="useTool">测量工具</span>
         <i class="el-icon-arrow-up" v-show="showTool"/>
         <i class="el-icon-arrow-down" v-show="!showTool"/>       
     </span>
@@ -30,11 +39,11 @@ export default {
             showTool:false,
             optionTool:[
                 {
-                    key:'measureDistance',
+                    key:'LineString',
                     name:'测距'
                 },
                 {
-                    key:'measureArea',
+                    key:'Polygon',
                     name:'测面'
                 }
             ]
@@ -49,8 +58,8 @@ export default {
             this.showTool = false
         },
         onToolClick(item){
-            console.log("我是点击到的工具",item)
-            this.excuteMapMethod('drawMeasure')
+            // console.log("我是点击到的工具",item)
+            this.excuteMapMethod('drawMeasure',item.key)
             
         }
     }
@@ -59,13 +68,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.simpleTool{
+    padding: 0 0 0 8px;
+}
 .showListTool{
     // max-width: 80px;
   // width: 400px;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 120px;
+  min-width: 120px;
   position: absolute;
   z-index: 20;
   // left: 25px;
