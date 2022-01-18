@@ -1,19 +1,21 @@
 <!--
  * @Author: your name
  * @Date: 2022-01-12 18:01:20
- * @LastEditTime: 2022-01-17 17:26:23
+ * @LastEditTime: 2022-01-18 17:10:22
  * @LastEditors: 阿匡
  * @Description: 工具栏
  * @FilePath: \vue2-ol-zkstudy\src\components\ToolBar\index.vue
 -->
 <template>
   <div class="toolBar">
+    <LayerControl/>
     <SimpleTool/>
     <Clear/>
   </div>
 </template>
 
 <script>
+import LayerControl from '@/components/ToolBar/LayerControl'
 import Clear from '@/components/ToolBar/Clear'
 import SimpleTool from '@/components/ToolBar/SimpleTool'
 export default {
@@ -23,19 +25,12 @@ export default {
       
     }
   },
-  components:{SimpleTool,Clear}
+  components:{SimpleTool,Clear,LayerControl}
 
 }
 </script>
 
 <style lang="scss" scoped>
-/* .tool{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height:100%
-} */
   .toolBar{
     position: absolute;
     top: 127px;

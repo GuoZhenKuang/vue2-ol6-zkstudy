@@ -1,7 +1,7 @@
 <!--
  * @Author: 阿匡
  * @Date: 2022-01-17 17:06:43
- * @LastEditTime: 2022-01-17 17:50:16
+ * @LastEditTime: 2022-01-18 17:53:18
  * @LastEditors: 阿匡
  * @Description: 清除功能
  * @FilePath: \vue2-ol-zkstudy\src\components\ToolBar\Clear\index.vue
@@ -23,7 +23,7 @@ export default {
     methods:{
         clear(){
             // console.log("我是清除")
-            this.excuteMapMethod('clear')
+            this.excuteMapMethod('allClear')
         }
     }
 }

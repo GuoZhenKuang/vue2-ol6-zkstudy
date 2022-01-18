@@ -1,7 +1,7 @@
 /*
  * @Author: 阿匡
  * @Date: 2022-01-14 09:45:39
- * @LastEditTime: 2022-01-17 17:44:55
+ * @LastEditTime: 2022-01-18 09:30:48
  * @LastEditors: 阿匡
  * @Description: 
  * @FilePath: \vue2-ol-zkstudy\src\components\Map\mixin\drawControl\index.js
@@ -35,11 +35,11 @@ export default {
             let continueLineMsg='继续点击绘制线'//当用户绘制线要素的时候展示的信息
 
             //设计一个资源
-            _this.drawSource = new VectorSource()
+            let drawSource = new VectorSource()
             //先制作一个存放线和面的矢量图层
             let lineAndAreaVecotr = new VectorLayer({
                 id:'lineAndArea',
-                source:_this.drawSource,
+                source:drawSource,
                 style:new Style({
                     fill:new Fill({
                         color:'rgba(255, 255, 255, 0.2)'
@@ -166,7 +166,7 @@ export default {
            function addInteraction(){
             let listener=null//监听绘制要素
                let draw = new Draw({
-                   source:_this.drawSource,
+                   source:drawSource,
                    type:measureType,
                    style:new Style({
                     fill: new Fill({

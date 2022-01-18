@@ -1,18 +1,18 @@
 <!--
  * @Author: 阿匡
- * @Date: 2022-01-13 11:36:14
- * @LastEditTime: 2022-01-18 17:18:40
+ * @Date: 2022-01-18 17:05:40
+ * @LastEditTime: 2022-01-18 17:57:34
  * @LastEditors: 阿匡
- * @Description: 
- * @FilePath: \vue2-ol-zkstudy\src\components\ToolBar\SimpleTool\index.vue
+ * @Description: 图层控制功能
+ * @FilePath: \vue2-ol-zkstudy\src\components\ToolBar\LayerControl\index.vue
  * 仅为学习使用
 -->
+
 <template>
-  <div class="simpleTool" @mouseover="onCurrentToolEnter" >
-    <span style="padding:0 8px 0 0 ">|</span>
+    <div class="simpleTool" @mouseover="onCurrentToolEnter">
     <i class="el-icon-s-tools" style="padding:0 3px 0 0 "/>
     <span class="show-tool">
-        <span class="useTool">测量工具</span>
+        <span class="useTool">图层控制</span>
         <i class="el-icon-arrow-up" v-show="showTool"/>
         <i class="el-icon-arrow-down" v-show="!showTool"/>       
     </span>
@@ -20,10 +20,10 @@
         <ul>
             <li
             v-for="toolItem in optionTool"
-            :key="toolItem.key"
-            @click="onToolClick(toolItem)"
+            :key="toolItem.id"
             >
-            <span>{{toolItem.name}}</span>
+            <el-checkbox @change="onToolClick(toolItem)" :label="toolItem.name" v-model="toolItem.checked"></el-checkbox>
+            <!-- <span></span> -->
             </li>
         </ul>
     </div>
@@ -33,38 +33,46 @@
 <script>
 import executeMixin from '@/components/Map/mixin/executeMixin'
 export default {
-    name:'simpleTool',
+    name:'layerControl',
     mixins:[executeMixin],
     data() {
         return {
             showTool:false,
             optionTool:[
                 {
-                    key:'LineString',
-                    name:'测距'
+                    key:'addGeojson',
+                    id:'yqData',
+                    name:'GeoJson',
+                    checked:false
                 },
                 {
-                    key:'Polygon',
-                    name:'测面'
+                    key:'addTileLayer',
+                    id:'tdtData',
+                    name:'天地图',
+                    checked:false
                 }
             ]
         }
     },
     methods:{
         onCurrentToolEnter(){
-            //移进来的时候，展示工具栏
-            this.showTool = true
+        //移进来的时候，展示工具栏
+        this.showTool = true
         },
         onCurrentToolLeave(){
             this.showTool = false
         },
         onToolClick(item){
-            // console.log("我是点击到的工具",item)
-            this.excuteMapMethod('drawMeasure',item.key)
+            console.log("我是点击到的工具",item)
+            if(item.key=="addGeojson"&& item.checked==true){
+                this.excuteMapMethod('addGeoJson',item.id)
+            }else if(item.checked==false){
+                this.excuteMapMethod('clearLayer',item.id)
+            }
+            // this.excuteMapMethod('drawMeasure',item.key)
             
         }
     }
-
 }
 </script>
 
@@ -83,12 +91,12 @@ export default {
   z-index: 20;
   // left: 25px;
   top: 43px;
-//   left: 0;
+  left: 0;
   background-color: white;
   box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.1);
   border-radius: 0px 5px 5px 5px;
   li{
-      padding: 0 0 10px 0;
+      padding: 10px 0 10px 0;
       cursor: pointer;
       //取出li前面的符号
       list-style: none;
