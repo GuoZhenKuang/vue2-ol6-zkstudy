@@ -1,17 +1,21 @@
 /*
  * @Author: 阿匡
  * @Date: 2022-01-17 17:45:14
- * @LastEditTime: 2022-01-18 17:55:56
+ * @LastEditTime: 2022-01-19 16:19:44
  * @LastEditors: 阿匡
  * @Description: 控制图层
  * @FilePath: \vue2-ol-zkstudy\src\components\Map\mixin\layerControl\index.js
  * @仅为学习使用
  */
 import {Vector as VectorLayer } from "ol/layer";
-import {Vector as VectorSource} from "ol/source";
+import {Vector as VectorSource,XYZ,WMTS } from "ol/source";
+import WMTSTileGrid from "ol/tilegrid/WMTS";
 import GeoJSON from "ol/format/GeoJSON";
 import {Stroke,Style,Fill,Text} from 'ol/style';
 import Overlay from "ol/Overlay";
+import TileLayer from "ol/layer/Tile";
+import {get as getProjection} from 'ol/proj.js';
+import {getWidth,getTopLeft} from 'ol/extent.js';
 export default {
     data() {
         return {
@@ -40,7 +44,7 @@ export default {
             })
             _this.ol2dmap.addLayer(vectorLayer)
             })
-           _this.ol2dmap.on("singleclick",function(evt){
+           _this.ol2dmap.on("click",function(evt){
              if(_this.hightLightLayer){
                //如果有高亮图层则清除
                _this.ol2dmap.removeLayer(_this.hightLightLayer)
@@ -75,14 +79,57 @@ export default {
               }else{
                 //点击其他地方的时会取消弹窗
                 if(_this.popupOverlay){
-                  _this.popupOverlay.setPosition(undefined);
                   _this.isShowPopup = false
+                  _this.popupOverlay.setPosition(undefined);
+                  
                 }
               }
             })
         },
+        addXYZ(id){
+          let _this = this
+          let xyzSourceLayer = new TileLayer({
+            id:id,
+            source:new XYZ({
+              url:"http://t0.tianditu.com/DataServer?T=img_w&x={x}&y={y}&l={z}&tk=d6990134f027336926823777b1c7b77a"
+            })
+          })
+          _this.ol2dmap.addLayer(xyzSourceLayer)
+        },
+        addWMTX(id){
+          let _this =this
+          let projection = getProjection("EPSG:3857")
+          let projectionExtent = projection.getExtent();
+          let size = getWidth(projectionExtent) / 256;
+          let resolutions = new Array(18);
+          let matrixIds = new Array(18);
+          for (let z = 1; z < 19; ++z) {
+            // generate resolutions and matrixIds arrays for this WMTS
+            resolutions[z] = size / Math.pow(2, z);
+            matrixIds[z] = z;
+          }
+          let WMTSLayer = new TileLayer({
+            id:id,
+            source:new WMTS({
+              url:"http://t0.tianditu.gov.cn/cia_w/wmts?tk=d6990134f027336926823777b1c7b77a",
+              layer:"cia",
+              matrixSet:"w",
+              format:"tiles",
+              style:"default",
+              projection:projection,
+              tileGrid:new WMTSTileGrid({
+                origin: getTopLeft(projectionExtent),
+                resolutions: resolutions,
+                matrixIds: matrixIds,
+              }),
+              wrapX:true
+            })
+          })
+          _this.ol2dmap.addLayer(WMTSLayer)
+        },
         addPopup(showLocation,feature){
             let _this= this
+            if(feature.name){
             _this.isShowPopup = true
             //存储弹窗的dom元素
             let container = document.getElementById('popup')
@@ -90,6 +137,7 @@ export default {
             let content = document.getElementById('popup-content')
             //创建弹窗Overlay对象
             _this.popupOverlay = new Overlay({
+              id:'popup',
               element:container,
               autoPan:true,
               autoPanAnimation:{
@@ -135,12 +183,12 @@ export default {
                     </table>
             `
             _this.popupOverlay.setPosition(showLocation)//把 popupOverlay 显示到指定的 x,y坐标
-            
             //为弹窗相应一个关闭的函数
             closer.onclick = function(){
               _this.popupOverlay.setPosition(undefined);
               closer.blur();
               return false
+            }
             }
   
           },
@@ -194,14 +242,15 @@ export default {
         },
         allClear(){
             let _this = this
-            let drawLayerLength = _this.ol2dmap.getLayers().getArray().filter(item=>item.getProperties().id=="lineAndArea").length
-            if(drawLayerLength>0){
-                let drawLayerArray =  _this.ol2dmap.getLayers().getArray().filter(item=>item.getProperties().id=="lineAndArea")
-                drawLayerArray.map(item=>{
-                    _this.ol2dmap.removeLayer(item)
-                })
-            }
+            //清空除了底图以外的图层,先找到除底图以外的图层
+            let anOtherLayers = _this.ol2dmap.getLayers().getArray().filter(item=>item.getProperties().id!="baseMap")
+            anOtherLayers.map(item=>{
+              //清空除底图以外的所有图层
+              _this.ol2dmap.removeLayer(item)
+            })
+            //清空所有的覆盖物
             _this.ol2dmap.getOverlays().clear();
+            _this.$store.commit('clickAllClear',Math.random())
         },
         clearLayer(id){
             let _this = this
@@ -212,6 +261,13 @@ export default {
                     _this.ol2dmap.removeLayer(item)
                 })
             }
+            // console.log("我是所有的叠加物体",_this.ol2dmap)
+            //如果有弹窗覆盖物，还要清除弹窗覆盖物
+            // _this.ol2dmap.getControls().getArray().find(interaction=>{
+            //   return interaction instanceof Attribution
+            // })
+            // _this.ol2dmap.removeControl()
+
         }
     },
 }

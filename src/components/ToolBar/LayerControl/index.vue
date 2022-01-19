@@ -1,7 +1,7 @@
 <!--
  * @Author: 阿匡
  * @Date: 2022-01-18 17:05:40
- * @LastEditTime: 2022-01-18 17:57:34
+ * @LastEditTime: 2022-01-19 16:18:35
  * @LastEditors: 阿匡
  * @Description: 图层控制功能
  * @FilePath: \vue2-ol-zkstudy\src\components\ToolBar\LayerControl\index.vue
@@ -46,12 +46,30 @@ export default {
                     checked:false
                 },
                 {
-                    key:'addTileLayer',
+                    key:'addXYZ',
                     id:'tdtData',
-                    name:'天地图',
+                    name:'影像',
                     checked:false
+                },{
+                    key:'addWMTS',
+                    id:'zjData',
+                    name:'注记',
+                    checked:false 
                 }
             ]
+        }
+    },
+    computed:{
+        allClear(){
+            return this.$store.state.allClear
+        }
+    },
+    watch:{
+        allClear(){
+            //监听用户是否点击了全部清除，如果全部清除则遍历清除所有的勾选按钮
+            this.optionTool.map(item=>{
+                item.checked=false
+            })
         }
     },
     methods:{
@@ -63,14 +81,16 @@ export default {
             this.showTool = false
         },
         onToolClick(item){
-            console.log("我是点击到的工具",item)
             if(item.key=="addGeojson"&& item.checked==true){
                 this.excuteMapMethod('addGeoJson',item.id)
-            }else if(item.checked==false){
-                this.excuteMapMethod('clearLayer',item.id)
+            }else if(item.key=="addXYZ"&& item.checked==true){
+                this.excuteMapMethod('addXYZ',item.id)
+            }else if(item.key=="addWMTS"&& item.checked==true){
+                this.excuteMapMethod('addWMTX',item.id)  
             }
-            // this.excuteMapMethod('drawMeasure',item.key)
-            
+            else if(item.checked==false){
+                this.excuteMapMethod('clearLayer',item.id)
+            }            
         }
     }
 }

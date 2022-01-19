@@ -1,10 +1,10 @@
 <!--
  * @Author: 阿匡
  * @Date: 2022-01-05 22:11:57
- * @LastEditTime: 2022-01-18 17:46:32
+ * @LastEditTime: 2022-01-19 14:33:38
  * @LastEditors: 阿匡
  * @Description: 
- * @FilePath: \undefinedc:\02myProject\vue2-ol-zkstudy\src\components\Map\Map2D\index.vue
+ * @FilePath: \vue2-ol-zkstudy\src\components\Map\Map2D\index.vue
  * 仅为学习使用
 -->
 <template>
@@ -61,6 +61,7 @@ export default {
                 target: 'map',
                 layers: [
                     new TileLayer({
+                        id:'baseMap',
                         source:new TileArcGISRest({
                             url:mapUrl
                         })

@@ -1,7 +1,7 @@
 /*
  * @Author: 阿匡
  * @Date: 2022-01-14 09:45:39
- * @LastEditTime: 2022-01-18 09:30:48
+ * @LastEditTime: 2022-01-19 14:38:55
  * @LastEditors: 阿匡
  * @Description: 
  * @FilePath: \vue2-ol-zkstudy\src\components\Map\mixin\drawControl\index.js
@@ -210,7 +210,7 @@ export default {
                         tooltipCoord = geom.getLastCoordinate();
                       }
                       measureTooltipElement.innerHTML = output;
-                      measureTooltip.setPosition(tooltipCoord);                      
+                      measureTooltip.setPosition(tooltipCoord);
                    })
                },_this)
                //绘制结束
