@@ -1,7 +1,7 @@
 /*
  * @Author: 阿匡
  * @Date: 2022-01-17 17:45:14
- * @LastEditTime: 2022-01-19 16:19:44
+ * @LastEditTime: 2022-01-20 17:56:07
  * @LastEditors: 阿匡
  * @Description: 控制图层
  * @FilePath: \vue2-ol-zkstudy\src\components\Map\mixin\layerControl\index.js
@@ -11,11 +11,16 @@ import {Vector as VectorLayer } from "ol/layer";
 import {Vector as VectorSource,XYZ,WMTS } from "ol/source";
 import WMTSTileGrid from "ol/tilegrid/WMTS";
 import GeoJSON from "ol/format/GeoJSON";
-import {Stroke,Style,Fill,Text} from 'ol/style';
+import {Circle as CircleStyle,Stroke,Style,Fill,Text} from 'ol/style';
 import Overlay from "ol/Overlay";
 import TileLayer from "ol/layer/Tile";
 import {get as getProjection} from 'ol/proj.js';
 import {getWidth,getTopLeft} from 'ol/extent.js';
+import Feature from 'ol/Feature';
+import Point from 'ol/geom/Point';
+//esrijson转换成geojson
+import { arcgisToGeoJSON } from '@esri/arcgis-to-geojson-utils';
+// import { geojsonToArcGIS } from '@esri/arcgis-to-geojson-utils';
 export default {
     data() {
         return {
@@ -126,6 +131,91 @@ export default {
             })
           })
           _this.ol2dmap.addLayer(WMTSLayer)
+        },
+        addCluster(id){
+          //针对数据先进行预处理先
+          let _this = this
+          // let showPosition = null
+          _this.$axios.get('/EsriJson/Point.json').then(res=>{
+            // console.log("我是得到的Esrijson的数据",res)
+
+            // 方法一
+            if(res.data.features.length>0){
+              let GeoJsondata ={
+                crs:{
+                  type:'name',
+                  properties:'EPSG:3857'
+                },
+                features:[],
+                type:'FeatureCollection'
+              }
+              for(let i=0;i<res.data.features.length;i++){
+                let geojson = arcgisToGeoJSON(res.data.features[i])
+                GeoJsondata.features.push(geojson)
+              }
+            // 转换后，把转换后加载的数据渲染到界面上
+            let readFeatures = new GeoJSON().readFeatures(GeoJsondata,{
+              featureProjection:"EPSG:3857"
+            })
+              // 定义一个矢量数据源,features从geojson中读取
+              let clusterVectorSource = new VectorSource({
+                features:readFeatures
+            })
+            let clusterVectorLayer = new VectorLayer({
+              id:id,
+              source:clusterVectorSource,
+              style:new Style({
+                image: new CircleStyle({
+                  radius: 5,
+                  stroke: new Stroke({
+                    color: '#fff'
+                  }),
+                  fill: new Fill({
+                    color: '#3399CC'
+                  })
+                })
+              })
+            })
+            _this.ol2dmap.addLayer(clusterVectorLayer)
+            }
+            //#region 方法二（遍历生成feature）
+            //方法二（遍历生成feature）
+            // let num = res.data.features.length
+            // if(num>0){
+            //   //生成存放features的数组
+            //   let features = new Array(num)
+            //   for(let i=0;i<num;i++){
+            //     let geo = res.data.features[i].geometry
+            //     let coordinate = [geo.x,geo.y]
+            //     features[i] = new Feature({
+            //       geometry:new Point(coordinate),
+            //       region:res.data.features[i].attributes["region"],
+            //       name: res.data.features[i].attributes["company_na"]
+            //     })
+            //   }
+            //   let clusterVectorSource = new VectorSource({
+            //     features:features
+            // })
+            //   let clusterVectorLayer = new VectorLayer({
+            //     id:id,
+            //     source:clusterVectorSource,
+            //     style:new Style({
+            //       image: new CircleStyle({
+            //         radius: 5,
+            //         stroke: new Stroke({
+            //           color: '#fff'
+            //         }),
+            //         fill: new Fill({
+            //           color: '#3399CC'
+            //         })
+            //       })
+            //     })
+            //   })
+            //   _this.ol2dmap.addLayer(clusterVectorLayer)
+            // }
+            //#endregion
+
+          })
         },
         addPopup(showLocation,feature){
             let _this= this
@@ -261,12 +351,6 @@ export default {
                     _this.ol2dmap.removeLayer(item)
                 })
             }
-            // console.log("我是所有的叠加物体",_this.ol2dmap)
-            //如果有弹窗覆盖物，还要清除弹窗覆盖物
-            // _this.ol2dmap.getControls().getArray().find(interaction=>{
-            //   return interaction instanceof Attribution
-            // })
-            // _this.ol2dmap.removeControl()
 
         }
     },

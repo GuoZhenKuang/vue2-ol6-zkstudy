@@ -1,9 +1,9 @@
 <!--
  * @Author: 阿匡
  * @Date: 2022-01-05 22:11:57
- * @LastEditTime: 2022-01-19 14:33:38
+ * @LastEditTime: 2022-01-19 20:31:15
  * @LastEditors: 阿匡
- * @Description: 
+ * @Description: 原始地图
  * @FilePath: \vue2-ol-zkstudy\src\components\Map\Map2D\index.vue
  * 仅为学习使用
 -->
@@ -20,7 +20,6 @@
 </template>
 
 <script>
-import "ol/ol.css";
 import { Map, View } from "ol";
 import { transform } from "ol/proj";
 import {TileArcGISRest} from "ol/source";

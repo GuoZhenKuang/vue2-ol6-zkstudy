@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2022-01-12 18:01:20
- * @LastEditTime: 2022-01-18 17:10:22
+ * @LastEditTime: 2022-01-20 15:16:16
  * @LastEditors: 阿匡
  * @Description: 工具栏
  * @FilePath: \vue2-ol-zkstudy\src\components\ToolBar\index.vue
@@ -10,12 +10,14 @@
   <div class="toolBar">
     <LayerControl/>
     <SimpleTool/>
+    <Swipe/>
     <Clear/>
   </div>
 </template>
 
 <script>
 import LayerControl from '@/components/ToolBar/LayerControl'
+import Swipe from '@/components/ToolBar/Swipe'
 import Clear from '@/components/ToolBar/Clear'
 import SimpleTool from '@/components/ToolBar/SimpleTool'
 export default {
@@ -25,7 +27,7 @@ export default {
       
     }
   },
-  components:{SimpleTool,Clear,LayerControl}
+  components:{SimpleTool,Clear,LayerControl,Swipe}
 
 }
 </script>
@@ -33,8 +35,8 @@ export default {
 <style lang="scss" scoped>
   .toolBar{
     position: absolute;
-    top: 127px;
-    left: 144px;
+    top: 80px;
+    left: 25px;
     z-index: 100;
     min-width: 140px;
     box-shadow:0 7px 5px -5px #d0d0d0;

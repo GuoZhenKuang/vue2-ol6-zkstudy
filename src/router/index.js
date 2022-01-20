@@ -1,7 +1,7 @@
 /*
  * @Author: 阿匡
  * @Date: 2022-01-05 21:48:52
- * @LastEditTime: 2022-01-16 11:27:11
+ * @LastEditTime: 2022-01-19 20:19:32
  * @LastEditors: 阿匡
  * @Description: 路由跳转界面
  * @FilePath: \vue2-ol-zkstudy\src\router\index.js
@@ -30,6 +30,10 @@ const routes = [
         path:'/Map3d',
         name:'Map3d',
         component:()=>import('@/components/Map/Map3D')
+      },{
+        path:'/SwipeMap',
+        name:'SwipeMap',
+        component:()=>import('@/components/Map/SwipeMap')
       }
     ]
   },

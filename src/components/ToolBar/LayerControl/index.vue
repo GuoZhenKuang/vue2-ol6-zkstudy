@@ -1,7 +1,7 @@
 <!--
  * @Author: 阿匡
  * @Date: 2022-01-18 17:05:40
- * @LastEditTime: 2022-01-19 16:18:35
+ * @LastEditTime: 2022-01-20 16:23:20
  * @LastEditors: 阿匡
  * @Description: 图层控制功能
  * @FilePath: \vue2-ol-zkstudy\src\components\ToolBar\LayerControl\index.vue
@@ -10,7 +10,7 @@
 
 <template>
     <div class="simpleTool" @mouseover="onCurrentToolEnter">
-    <i class="el-icon-s-tools" style="padding:0 3px 0 0 "/>
+    <i class="el-icon-s-unfold" style="padding:0 3px 0 0 "/>
     <span class="show-tool">
         <span class="useTool">图层控制</span>
         <i class="el-icon-arrow-up" v-show="showTool"/>
@@ -55,6 +55,11 @@ export default {
                     id:'zjData',
                     name:'注记',
                     checked:false 
+                },{
+                    key:'addCluster',
+                    id:'esriPoint',
+                    name:'聚合图',
+                    checked:false
                 }
             ]
         }
@@ -87,6 +92,8 @@ export default {
                 this.excuteMapMethod('addXYZ',item.id)
             }else if(item.key=="addWMTS"&& item.checked==true){
                 this.excuteMapMethod('addWMTX',item.id)  
+            }else if(item.key=="addCluster"&& item.checked==true){
+                this.excuteMapMethod('addCluster',item.id)  
             }
             else if(item.checked==false){
                 this.excuteMapMethod('clearLayer',item.id)
