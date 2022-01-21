@@ -1,23 +1,23 @@
 /*
  * @Author: 阿匡
  * @Date: 2022-01-17 17:45:14
- * @LastEditTime: 2022-01-20 17:56:07
+ * @LastEditTime: 2022-01-21 17:58:30
  * @LastEditors: 阿匡
  * @Description: 控制图层
  * @FilePath: \vue2-ol-zkstudy\src\components\Map\mixin\layerControl\index.js
  * @仅为学习使用
  */
 import {Vector as VectorLayer } from "ol/layer";
-import {Vector as VectorSource,XYZ,WMTS } from "ol/source";
+import {Vector as VectorSource,XYZ,WMTS, Cluster } from "ol/source";
 import WMTSTileGrid from "ol/tilegrid/WMTS";
 import GeoJSON from "ol/format/GeoJSON";
 import {Circle as CircleStyle,Stroke,Style,Fill,Text} from 'ol/style';
 import Overlay from "ol/Overlay";
 import TileLayer from "ol/layer/Tile";
-import {get as getProjection} from 'ol/proj.js';
-import {getWidth,getTopLeft} from 'ol/extent.js';
-import Feature from 'ol/Feature';
-import Point from 'ol/geom/Point';
+import {get as getProjection} from 'ol/proj';
+// import Feature from 'ol/Feature';
+// import Point from 'ol/geom/Point';
+import {createEmpty,extend,getWidth,getHeight,getTopLeft} from 'ol/extent';
 //esrijson转换成geojson
 import { arcgisToGeoJSON } from '@esri/arcgis-to-geojson-utils';
 // import { geojsonToArcGIS } from '@esri/arcgis-to-geojson-utils';
@@ -55,12 +55,12 @@ export default {
                _this.ol2dmap.removeLayer(_this.hightLightLayer)
              }
                 showPosition=evt.coordinate
-                //判断是否判断是否有要素，再给要素赋值
-              if(_this.ol2dmap.hasFeatureAtPixel(evt.pixel)){
-                let feature = _this.ol2dmap.getFeaturesAtPixel(evt.pixel)[0]
-                let featureData = _this.ol2dmap.getFeaturesAtPixel(evt.pixel)[0].getProperties()
+                let feature = _this.ol2dmap.forEachFeatureAtPixel(evt.pixel,item=>{
+                  return item
+                })
+                if(feature){
                 //设置弹窗
-                _this.addPopup(showPosition,featureData)
+                _this.addPopup(showPosition,feature)
                 //高亮要素
                 let hightLightStyle = new Style({
                   stroke:new Stroke({
@@ -80,14 +80,13 @@ export default {
                   style:hightLightStyle
                 })
                 _this.ol2dmap.addLayer(_this.hightLightLayer)
-
-              }else{
-                //点击其他地方的时会取消弹窗
+                }else{
+              //点击其他地方的时会取消弹窗
                 if(_this.popupOverlay){
-                  _this.isShowPopup = false
-                  _this.popupOverlay.setPosition(undefined);
-                  
-                }
+                    _this.isShowPopup = false
+                    _this.popupOverlay.setPosition(undefined);
+                    
+                  }
               }
             })
         },
@@ -133,13 +132,13 @@ export default {
           _this.ol2dmap.addLayer(WMTSLayer)
         },
         addCluster(id){
+          let maxFeatureCount = 0
+          //聚合的图层
+          let clusterLayer = null
           //针对数据先进行预处理先
           let _this = this
-          // let showPosition = null
+          let showPosition = null
           _this.$axios.get('/EsriJson/Point.json').then(res=>{
-            // console.log("我是得到的Esrijson的数据",res)
-
-            // 方法一
             if(res.data.features.length>0){
               let GeoJsondata ={
                 crs:{
@@ -161,22 +160,122 @@ export default {
               let clusterVectorSource = new VectorSource({
                 features:readFeatures
             })
-            let clusterVectorLayer = new VectorLayer({
-              id:id,
-              source:clusterVectorSource,
-              style:new Style({
-                image: new CircleStyle({
-                  radius: 5,
-                  stroke: new Stroke({
-                    color: '#fff'
+            //设置聚合图的样式
+            function styleFunction(feature,resolution){
+              //在这个分辨率下做的聚合，所以每次feature.get('features')拿到的数据都不同的
+              let style = null
+              //计算每个聚合点的半径大小
+              let currentResolution = null
+              if(resolution!=currentResolution){
+                //计算聚合的半径
+                calculateClusterInfo(resolution)
+                currentResolution= resolution
+              }
+              let size = feature.get('features').length//每个点当前的聚合数
+              if(size>1){
+                //设置聚合效果样式
+                style = new Style({
+                  image:new CircleStyle({
+                    radius:feature.get('radius'),//获取聚合的半径大小，聚合点数越多，半径就越大
+                    fill:new Fill({
+                      color:[255, 153, 0, Math.min(0.8, 0.4 + (size / maxFeatureCount))]
+                    })
                   }),
-                  fill: new Fill({
-                    color: '#3399CC'
+                  text:new Text({
+                    textAlign:"center",
+                    font: '12px Calibri,sans-serif',
+                    text:size.toString(),
+                    fill:new Fill({
+                      color: '#fff'
+                     }),   
+                  stroke:new Stroke({
+                    color: 'rgba(0, 0, 0, 0.6)',
+                    width: 3
+                    }),
                   })
                 })
-              })
+              }else{
+                //设置没有聚合效果的原始样式
+                style =new Style({
+                  image: new CircleStyle({
+                    radius: 5,
+                    stroke: new Stroke({
+                      color: '#fff'
+                    }),
+                    fill: new Fill({
+                      color: '#3399CC'
+                    })
+                  })
+                })
+              }
+              return style
+              
+            }
+            //计算每个聚合点的半径大小
+            function calculateClusterInfo(resolution){
+              maxFeatureCount = 0
+              let feature = null
+              let radius = null
+              //得到当前图层所有的要素（注意这些features是已经聚合过的了，是在当前分辨率下得到聚合的要素）
+              let features = clusterLayer.getSource().getFeatures()
+              for(let i=0;i<features.length;i++){
+                feature = features[i]
+                let originalFeatures = feature.get('features')
+                //创建一个空区
+                let extent = createEmpty()
+                let oriFeaturesLength = originalFeatures.length
+                for(let j=0;j<oriFeaturesLength;j++){
+                  //修改一个区以包括另一个区
+                  extend(extent,originalFeatures[j].getGeometry().getExtent())
+                }
+                maxFeatureCount = Math.max(maxFeatureCount,oriFeaturesLength)
+                radius = 0.25*(getWidth(extent)+getHeight(extent)) / resolution
+                //修改该要素的半径
+                feature.set('radius',radius)
+              }
+
+            }
+
+            //加载聚合图
+            clusterLayer = new VectorLayer({
+              id:id,
+              //设置矢量图层的数据源为聚合类型
+              source:new Cluster({
+                distance:40,//聚合的类型
+                //设置聚合数据的来源
+                source:clusterVectorSource
+              }),
+              style:styleFunction//聚合的样式
             })
-            _this.ol2dmap.addLayer(clusterVectorLayer)
+            _this.ol2dmap.addLayer(clusterLayer)
+            //缩放到相应的范围
+            _this.ol2dmap.getView().setCenter([12637973.949997703, 2657176.0178779177])
+            _this.ol2dmap.getView().setZoom(10)
+
+            //鼠标单击显示弹窗
+            _this.ol2dmap.on('click',evt=>{
+              showPosition=evt.coordinate
+              if(evt.dragging){
+                //如果鼠标不是在正常点击则，取消
+                return
+              }
+              let feature = _this.ol2dmap.forEachFeatureAtPixel(evt.pixel,item=>{
+                return item
+              })
+              if(feature){
+                //说明此时是有数据的
+                _this.addPopup(showPosition,feature)
+              }else{
+                //说明拿到不数据，隐藏气泡窗口
+                if(_this.popupOverlay){
+                  _this.isShowPopup = false
+                  _this.popupOverlay.setPosition(undefined);
+                  
+                }
+
+              }
+
+            })
             }
             //#region 方法二（遍历生成feature）
             //方法二（遍历生成feature）
@@ -219,7 +318,11 @@ export default {
         },
         addPopup(showLocation,feature){
             let _this= this
-            if(feature.name){
+            //先清空，否则会生成很多个
+            if(_this.popupOverlay){
+              // _this.ol2dmap.removeOverlay(_this.popupOverlay)
+              _this.popupOverlay=null
+            }
             _this.isShowPopup = true
             //存储弹窗的dom元素
             let container = document.getElementById('popup')
@@ -234,6 +337,8 @@ export default {
                 duration:250//自动平移的效果动画时间9毫秒
               }
             });
+            if(Object.keys(feature.values_).includes('name')){
+              //feature.name这堆数据是针对geojson使用得
             //将弹窗添加到map地图上
             _this.ol2dmap.addOverlay(_this.popupOverlay)
             content.innerHTML=`
@@ -243,7 +348,7 @@ export default {
                               行&nbsp;&nbsp;政&nbsp;&nbsp;区
                           </th>&nbsp;&nbsp;
                           <th style="width:75%;padding:5px;border-bottom:1px solid #d9d9d9;">
-                              ${feature.name}
+                              ${feature.values_.name}
                           </th>
                       </tr>
                       <tr style="border-bottom:1px solid #d9d9d9;">
@@ -251,7 +356,7 @@ export default {
                               新&nbsp;&nbsp;增&nbsp;&nbsp;疑&nbsp;&nbsp;似
                           </th>&nbsp;&nbsp;
                           <th style="width:75%;padding:5px;border-bottom:1px solid #d9d9d9;">
-                              ${feature.新增疑似}
+                              ${feature.values_.新增疑似}
                           </th>
                       </tr>
                       <tr style="border-bottom:1px solid #d9d9d9;">
@@ -259,7 +364,7 @@ export default {
                               累&nbsp;&nbsp;积&nbsp;&nbsp;死&nbsp;&nbsp;亡
                           </th>&nbsp;&nbsp;
                           <th style="width:75%;padding:5px;border-bottom:1px solid #d9d9d9;">
-                              ${feature.累计死亡}
+                              ${feature.values_.累计死亡}
                           </th>
                       </tr>
                       <tr style="border-bottom:1px solid #d9d9d9;">
@@ -267,7 +372,7 @@ export default {
                               累&nbsp;&nbsp;积&nbsp;&nbsp;确&nbsp;&nbsp;诊
                           </th>&nbsp;&nbsp;
                           <th style="width:75%;padding:5px;">
-                              ${feature.累计确诊}
+                              ${feature.values_.累计确诊}
                           </th>
                       </tr>
                     </table>
@@ -280,6 +385,66 @@ export default {
               return false
             }
             }
+            if(Object.keys(feature.values_).includes('features')&&feature.values_.features.length != 1){
+              //说明当前点击得是聚合的要素(整个聚合)
+              _this.ol2dmap.addOverlay(_this.popupOverlay)
+              content.innerHTML= `当前聚合有${feature.values_.features.length}个公司`
+              _this.popupOverlay.setPosition(showLocation)//把 popupOverlay 显示到指定的 x,y坐标
+              //为弹窗相应一个关闭的函数
+              closer.onclick = function(){
+                _this.popupOverlay.setPosition(undefined);
+                closer.blur();
+                return false
+              }
+            }else if(Object.keys(feature.values_).includes('features')&&feature.values_.features.length == 1){
+              //只有一个要素的时候
+              _this.ol2dmap.addOverlay(_this.popupOverlay)
+              let popupData = feature.values_.features[0].getProperties()
+              content.innerHTML= `
+              <table cellspacing="0" cellpadding="0" style="border:1px solid #d9d9d9;width:100%;font-size:12px">
+            <tr>
+                <th style="width:25%;text-align:right;padding:5px;border-right:1px solid #d9d9d9;color:#1089ff;border-bottom:1px solid #d9d9d9;">
+                    责&nbsp;&nbsp;任&nbsp;&nbsp;人
+                </th>&nbsp;&nbsp;
+                <th style="width:75%;padding:5px;border-bottom:1px solid #d9d9d9;">
+                    ${popupData.contacts}
+                </th>
+            </tr>
+            <tr style="border-bottom:1px solid #d9d9d9;">
+                <th style="width:25%;text-align:right;padding:5px;border-right:1px solid #d9d9d9;color:#1089ff;border-bottom:1px solid #d9d9d9;">
+                    行&nbsp;&nbsp;政&nbsp;&nbsp;区
+                </th>&nbsp;&nbsp;
+                <th style="width:75%;padding:5px;border-bottom:1px solid #d9d9d9;">
+                    ${popupData.region}
+                </th>
+            </tr>
+            <tr style="border-bottom:1px solid #d9d9d9;">
+                <th style="width:25%;text-align:right;padding:5px;border-right:1px solid #d9d9d9;color:#1089ff;border-bottom:1px solid #d9d9d9;">
+                    地&nbsp;&nbsp;址
+                </th>&nbsp;&nbsp;
+                <th style="width:75%;padding:5px;border-bottom:1px solid #d9d9d9;">
+                    ${popupData.company_ad}
+                </th>
+            </tr>
+            <tr style="border-bottom:1px solid #d9d9d9;">
+            <th style="width:25%;text-align:right;padding:5px;border-right:1px solid #d9d9d9;color:#1089ff;border-bottom:1px solid #d9d9d9;">
+                公&nbsp;&nbsp;司&nbsp;&nbsp;名&nbsp;&nbsp;称
+            </th>&nbsp;&nbsp;
+            <th style="width:75%;padding:5px;border-bottom:1px solid #d9d9d9;">
+                ${popupData.company_na}
+            </th>
+        </tr>
+          </table>
+  `
+              _this.popupOverlay.setPosition(showLocation)//把 popupOverlay 显示到指定的 x,y坐标
+              //为弹窗相应一个关闭的函数
+              closer.onclick = function(){
+                _this.popupOverlay.setPosition(undefined);
+                closer.blur();
+                return false
+              }
+            }
+
   
           },
         //返回累计确诊人数得样式的函数
@@ -339,7 +504,11 @@ export default {
               _this.ol2dmap.removeLayer(item)
             })
             //清空所有的覆盖物
-            _this.ol2dmap.getOverlays().clear();
+            //Todo:清一个就少一个
+            let olLyrs = _this.ol2dmap.getOverlays().getArray();
+            olLyrs.map(item=>{
+                item.setPosition(undefined)
+            })
             _this.$store.commit('clickAllClear',Math.random())
         },
         clearLayer(id){

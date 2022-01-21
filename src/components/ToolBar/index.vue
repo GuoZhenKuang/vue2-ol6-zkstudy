@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2022-01-12 18:01:20
- * @LastEditTime: 2022-01-20 15:16:16
+ * @LastEditTime: 2022-01-21 11:43:24
  * @LastEditors: 阿匡
  * @Description: 工具栏
  * @FilePath: \vue2-ol-zkstudy\src\components\ToolBar\index.vue
@@ -27,7 +27,7 @@ export default {
       
     }
   },
-  components:{SimpleTool,Clear,LayerControl,Swipe}
+  components:{SimpleTool,Clear,LayerControl,Swipe},
 
 }
 </script>

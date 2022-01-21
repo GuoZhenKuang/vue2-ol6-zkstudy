@@ -1,7 +1,7 @@
 /*
  * @Author: 阿匡
  * @Date: 2022-01-14 09:45:39
- * @LastEditTime: 2022-01-19 14:38:55
+ * @LastEditTime: 2022-01-21 17:59:33
  * @LastEditors: 阿匡
  * @Description: 
  * @FilePath: \vue2-ol-zkstudy\src\components\Map\mixin\drawControl\index.js
@@ -137,9 +137,13 @@ export default {
                    //先移除原来的数据先
                 helpTooltipElement.parentNode.removeChild(helpTooltipElement);
                }
+            //    if(helpTooltip){
+            //     _this.ol2dmap.removeOverlay(helpTooltip);
+            //    }
                helpTooltipElement = document.createElement('div');
                helpTooltipElement.className = 'ol-tooltip hidden';
                helpTooltip = new Overlay({
+                id:'HelpTooltip',
                 element: helpTooltipElement,
                 offset: [15, 0],
                 positioning: 'center-left'
@@ -152,9 +156,13 @@ export default {
             if (measureTooltipElement) {
                 measureTooltipElement.parentNode.removeChild(measureTooltipElement);
               }
+            //   if(measureTooltip){
+            //     _this.ol2dmap.removeOverlay(measureTooltip);
+            //    }
               measureTooltipElement = document.createElement('div');
               measureTooltipElement.className = 'ol-tooltip ol-tooltip-measure';
               measureTooltip = new Overlay({
+                id:'MeasureTooltip',
                 element: measureTooltipElement,
                 offset: [0, -15],
                 positioning: 'bottom-center'
