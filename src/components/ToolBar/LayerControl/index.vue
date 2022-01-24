@@ -1,7 +1,7 @@
 <!--
  * @Author: 阿匡
  * @Date: 2022-01-18 17:05:40
- * @LastEditTime: 2022-01-20 16:23:20
+ * @LastEditTime: 2022-01-24 10:42:46
  * @LastEditors: 阿匡
  * @Description: 图层控制功能
  * @FilePath: \vue2-ol-zkstudy\src\components\ToolBar\LayerControl\index.vue
@@ -57,8 +57,13 @@ export default {
                     checked:false 
                 },{
                     key:'addCluster',
-                    id:'esriPoint',
+                    id:'addesriClusterPoint',
                     name:'聚合图',
+                    checked:false
+                },{
+                    key:'addHeatmap',
+                    id:'addesriHeatPoint',
+                    name:'热力图',
                     checked:false
                 }
             ]
@@ -94,6 +99,8 @@ export default {
                 this.excuteMapMethod('addWMTX',item.id)  
             }else if(item.key=="addCluster"&& item.checked==true){
                 this.excuteMapMethod('addCluster',item.id)  
+            }else if(item.key=="addHeatmap"&& item.checked==true){
+                this.excuteMapMethod('addHeatmap',item.id)
             }
             else if(item.checked==false){
                 this.excuteMapMethod('clearLayer',item.id)
