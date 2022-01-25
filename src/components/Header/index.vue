@@ -1,7 +1,7 @@
 <!--
  * @Author: 阿匡
  * @Date: 2022-01-15 12:02:31
- * @LastEditTime: 2022-01-17 14:24:40
+ * @LastEditTime: 2022-01-25 10:19:58
  * @LastEditors: 阿匡
  * @Description: 头部
  * @FilePath: \vue2-ol-zkstudy\src\components\Header\index.vue
@@ -54,7 +54,9 @@ export default {
 <style lang="scss" scoped>
 .headDiv{
     background-color: #002133;
+    width: 100%;
     height: 100%;
+    z-index: 100;
     .title{
         color: white;
         font-size: 25px;

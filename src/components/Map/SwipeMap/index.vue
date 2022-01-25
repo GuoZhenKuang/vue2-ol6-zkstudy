@@ -1,7 +1,7 @@
 <!--
  * @Author: 阿匡
  * @Date: 2022-01-19 20:17:40
- * @LastEditTime: 2022-01-20 15:14:16
+ * @LastEditTime: 2022-01-25 10:25:56
  * @LastEditors: 阿匡
  * @Description: 卷帘使用的地图
  * @FilePath: \vue2-ol-zkstudy\src\components\Map\SwipeMap\index.vue
@@ -174,7 +174,6 @@ export default {
       position: absolute;
       z-index: 30;
       font-family: "CalciteWebCoreIcons";
-      speak: none;
       font-size: 12px;
       font-style: normal;
       font-weight: normal;
@@ -212,6 +211,7 @@ export default {
       line-height: 2;
     }
     .exit{
+      user-select: none;
       position: absolute;
       top: 50px;
       left: 50px;

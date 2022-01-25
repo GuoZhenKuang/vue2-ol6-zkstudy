@@ -1,7 +1,7 @@
 /*
  * @Author: 阿匡
  * @Date: 2022-01-05 21:48:52
- * @LastEditTime: 2022-01-19 20:30:03
+ * @LastEditTime: 2022-01-24 15:31:14
  * @LastEditors: 阿匡
  * @Description: 
  * @FilePath: \vue2-ol-zkstudy\src\main.js
@@ -17,6 +17,12 @@ import "ol/ol.css";
 // 公共样式
 import "@/style/body.scss";
 import "@/style/ol.scss"
+
+// 引入cesium相关文件
+const cesium = require("cesium/Cesium.js");
+const widgets = require("cesium//Widgets/widgets.css");
+Vue.prototype.cesium = cesium;
+Vue.prototype.widgets = widgets;
 
 // elment-ui
 Vue.use(Element)

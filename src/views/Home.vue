@@ -1,7 +1,7 @@
 <!--
  * @Author: 阿匡
  * @Date: 2022-01-05 21:48:52
- * @LastEditTime: 2022-01-16 11:30:08
+ * @LastEditTime: 2022-01-25 10:22:01
  * @LastEditors: 阿匡
  * @Description: 
  * @FilePath: \vue2-ol-zkstudy\src\views\Home.vue
@@ -62,10 +62,6 @@ export default {
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
-  .qiehuan{
-    position:absolute;
-    z-index: 100;
-  }
 }
 
 </style>

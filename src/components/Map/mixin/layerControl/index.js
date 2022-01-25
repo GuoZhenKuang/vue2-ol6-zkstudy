@@ -1,13 +1,13 @@
 /*
  * @Author: 阿匡
  * @Date: 2022-01-17 17:45:14
- * @LastEditTime: 2022-01-24 11:58:11
+ * @LastEditTime: 2022-01-24 14:40:38
  * @LastEditors: 阿匡
  * @Description: 控制图层
  * @FilePath: \vue2-ol-zkstudy\src\components\Map\mixin\layerControl\index.js
  * @仅为学习使用
  */
-import {Vector as VectorLayer,Heatmap as HeatmapLayer,} from "ol/layer";
+import {Vector as VectorLayer,Heatmap as HeatmapLayer} from "ol/layer";
 import {Vector as VectorSource,XYZ,WMTS, Cluster } from "ol/source";
 import WMTSTileGrid from "ol/tilegrid/WMTS";
 import GeoJSON from "ol/format/GeoJSON";
@@ -347,9 +347,6 @@ export default {
          * @return {*}
          */
         addHeatmap(id){
-          let heatMapLayer = null//热力图
-          let heatMapRadius=null//半径
-          let heatMapGradient = null//颜色
           let _this = this
           _this.$axios.get('/EsriJson/HeatMapPoint.json').then(res=>{
             // console.log("我是热力图的点数据",res)
