@@ -1,7 +1,7 @@
 <!--
  * @Author: 阿匡
  * @Date: 2022-01-18 17:05:40
- * @LastEditTime: 2022-01-24 10:42:46
+ * @LastEditTime: 2022-01-26 15:43:50
  * @LastEditors: 阿匡
  * @Description: 图层控制功能
  * @FilePath: \vue2-ol-zkstudy\src\components\ToolBar\LayerControl\index.vue
@@ -19,7 +19,7 @@
     <div class="showListTool" v-show="showTool"  @mouseleave="onCurrentToolLeave">
         <ul>
             <li
-            v-for="toolItem in optionTool"
+            v-for="toolItem in dataOption"
             :key="toolItem.id"
             >
             <el-checkbox @change="onToolClick(toolItem)" :label="toolItem.name" v-model="toolItem.checked"></el-checkbox>
@@ -38,39 +38,15 @@ export default {
     data() {
         return {
             showTool:false,
-            optionTool:[
-                {
-                    key:'addGeojson',
-                    id:'yqData',
-                    name:'GeoJson',
-                    checked:false
-                },
-                {
-                    key:'addXYZ',
-                    id:'tdtData',
-                    name:'影像',
-                    checked:false
-                },{
-                    key:'addWMTS',
-                    id:'zjData',
-                    name:'注记',
-                    checked:false 
-                },{
-                    key:'addCluster',
-                    id:'addesriClusterPoint',
-                    name:'聚合图',
-                    checked:false
-                },{
-                    key:'addHeatmap',
-                    id:'addesriHeatPoint',
-                    name:'热力图',
-                    checked:false
-                }
-            ]
         }
     },
     computed:{
+        dataOption(){
+            //得到图层的数据
+            return this.$store.state.layerData
+        },
         allClear(){
+            //是否全部清除
             return this.$store.state.allClear
         }
     },
@@ -91,19 +67,38 @@ export default {
             this.showTool = false
         },
         onToolClick(item){
-            if(item.key=="addGeojson"&& item.checked==true){
-                this.excuteMapMethod('addGeoJson',item.id)
-            }else if(item.key=="addXYZ"&& item.checked==true){
-                this.excuteMapMethod('addXYZ',item.id)
-            }else if(item.key=="addWMTS"&& item.checked==true){
-                this.excuteMapMethod('addWMTX',item.id)  
-            }else if(item.key=="addCluster"&& item.checked==true){
-                this.excuteMapMethod('addCluster',item.id)  
-            }else if(item.key=="addHeatmap"&& item.checked==true){
-                this.excuteMapMethod('addHeatmap',item.id)
-            }
-            else if(item.checked==false){
+            if(item.is2dMap&&item.checked==true){
+                //二维数据加载
+                switch(item.key){
+                    case "addGeojson":
+                        this.excuteMapMethod('addGeoJson',item.id)
+                        break
+                    case "addXYZ":
+                        this.excuteMapMethod('addXYZ',item.id)
+                        break
+                    case "addWMTS":
+                        this.excuteMapMethod('addWMTX',item.id)
+                        break
+                    case "addCluster":
+                        this.excuteMapMethod('addCluster',item.id) 
+                        break
+                    case "addHeatmap":
+                        this.excuteMapMethod('addHeatmap',item.id)
+                        break
+                }
+            }else if(item.is2dMap&&item.checked==false){
+                //二维数据取消加载
                 this.excuteMapMethod('clearLayer',item.id)
+            }else if(item.is2dMap==false&&item.checked==true){
+                //三维数据加载
+                switch(item.key){
+                    case "addSimulationPoint":
+                    this.excuteMapMethod('addSimulationPoint')
+                    break
+                    case"addSimulationModel":
+                    this.excuteMapMethod('addSimulationModel')
+                    break
+                }
             }            
         }
     }

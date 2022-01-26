@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2022-01-12 18:01:20
- * @LastEditTime: 2022-01-21 11:43:24
+ * @LastEditTime: 2022-01-26 14:21:57
  * @LastEditors: 阿匡
  * @Description: 工具栏
  * @FilePath: \vue2-ol-zkstudy\src\components\ToolBar\index.vue
@@ -9,9 +9,11 @@
 <template>
   <div class="toolBar">
     <LayerControl/>
+    <template v-if="$route.name=='Map2d'">
     <SimpleTool/>
     <Swipe/>
     <Clear/>
+    </template>
   </div>
 </template>
 
@@ -24,7 +26,7 @@ export default {
   name:'ToolBar',
   data() {
     return {
-      
+      activedRoute:''
     }
   },
   components:{SimpleTool,Clear,LayerControl,Swipe},

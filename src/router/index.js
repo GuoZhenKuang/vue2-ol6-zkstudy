@@ -1,7 +1,7 @@
 /*
  * @Author: 阿匡
  * @Date: 2022-01-05 21:48:52
- * @LastEditTime: 2022-01-19 20:19:32
+ * @LastEditTime: 2022-01-26 14:19:03
  * @LastEditors: 阿匡
  * @Description: 路由跳转界面
  * @FilePath: \vue2-ol-zkstudy\src\router\index.js
@@ -24,12 +24,18 @@ const routes = [
       {
         path:'',
         name:'Map2d',
-        component:()=>import('@/components/Map/Map2D')
+        component:()=>import('@/components/Map/Map2D'),
+        meta:{
+          keepAlive:true//判断是否缓存
+        }
       },
       {
         path:'/Map3d',
         name:'Map3d',
-        component:()=>import('@/components/Map/Map3D')
+        component:()=>import('@/components/Map/Map3D'),
+        meta:{
+          keepAlive:true//判断是否缓存
+        }
       },{
         path:'/SwipeMap',
         name:'SwipeMap',

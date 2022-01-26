@@ -1,7 +1,7 @@
 <!--
  * @Author: 阿匡
  * @Date: 2022-01-05 21:48:52
- * @LastEditTime: 2022-01-25 10:22:01
+ * @LastEditTime: 2022-01-26 14:30:21
  * @LastEditors: 阿匡
  * @Description: 
  * @FilePath: \vue2-ol-zkstudy\src\views\Home.vue
@@ -15,7 +15,9 @@
         <ToolBar/>
       </template>
     </Map> -->
-      <router-view style="flex:15"></router-view>
+    <keep-alive>
+      <router-view style="flex:15" v-if="$route.meta.keepAlive"></router-view>
+    </keep-alive>
   </div>
 </template>
 

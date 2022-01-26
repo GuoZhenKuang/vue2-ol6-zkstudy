@@ -1,7 +1,7 @@
 <!--
  * @Author: 阿匡
  * @Date: 2022-01-16 11:09:09
- * @LastEditTime: 2022-01-25 11:21:34
+ * @LastEditTime: 2022-01-26 18:00:44
  * @LastEditors: 阿匡
  * @Description: Cesium学习
  * @FilePath: \vue2-ol-zkstudy\src\components\Map\Map3D\index.vue
@@ -9,19 +9,74 @@
 -->
 <template>
   <div class="box3d">
+    <ToolBar/>
     <div id="cesiumContainer" class="cesiumView"></div>
   </div>
 </template>
 
 <script>
+import ToolBar from '@/components/ToolBar'
+//引入过渡的混合
+import subscribeMixin from '@/components/Map/mixin/subscribeMixin'
+import executeMixin from '@/components/Map/mixin/executeMixin'
+//控制图层的方法
+import layer3dControl from'@/components/Map/mixin/layer3DControl'
 export default {
   name:'cesiumMap',
+  mixins:[subscribeMixin,executeMixin,layer3dControl],
   data(){
     return{
-      viewer:null//三维视图窗体
+      viewer:null,//三维视图窗体
+      //模拟点的数据
+      simulatePointData:[
+        {
+          id:'01',
+          x:'113.27599',
+          y:'23.11705',
+          psName:'公司1'
+        },{
+          id:'02',
+          x:'113.37599',
+          y:'23.12705',
+          psName:'公司2'
+        },{
+          id:'03',
+          x:'113.17599',
+          y:'23.22705',
+          psName:'公司3'
+        }
+      ]
+      
     }
   },
+  components:{
+      ToolBar
+    },
+    activated(){
+      let data3DLayer = [
+        {
+          is2dMap:false,
+          key:'addSimulationPoint',
+          id:'simulationPoint',
+          name:'模拟点',
+          checked:false
+        },{
+          is2dMap:false,
+          key:'addSimulationModel',
+          id:'simulationModel',
+          name:'模拟三维模型',
+          checked:false
+        }
+      ]
+      this.$store.commit('setLayerData',data3DLayer)
+    },
   methods:{
+    /**
+     * @author: 阿匡
+     * @description: 初始化三维模型
+     * @param {*}
+     * @return {*}
+     */
     init3DMap(){
       const Cesium = this.cesium
       Cesium.Ion.defaultAccessToken ="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJkMjY4N2U3Zi04NWU3LTQ4NjAtODA1Yi0zODk4OTM2MGZjYTEiLCJpZCI6ODA1NTcsImlhdCI6MTY0MzAwNzM0N30.fw2JyeiMteYPK6azGkFXwdED-wKWHfE1TbhTEXowNSY"
@@ -54,6 +109,7 @@ export default {
           url:"http://webst02.is.autonavi.com/appmaptile?x={x}&y={y}&z={z}&lang=zh_cn&size=1&scale=1&style=8"
         })
       )
+      this.viewer.terrainProvider = new Cesium.createWorldTerrain();
       //设置初始的位置Cesium.Cartesian3.fromDegrees(longitude, latitude, height, ellipsoid, result)
       const boundingSphere = new Cesium.BoundingSphere(
         Cesium.Cartesian3.fromDegrees(113.27599, 23.11705, 100),15000
@@ -63,7 +119,8 @@ export default {
         // 定位到初始位置的过渡时间，设置成0，就没有过渡，类似一个过场的动画时长
         duration:0
       })
-    }
+    },
+
   },
   mounted(){
     this.init3DMap()

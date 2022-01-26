@@ -1,7 +1,7 @@
 <!--
  * @Author: 阿匡
  * @Date: 2022-01-05 22:11:57
- * @LastEditTime: 2022-01-19 20:31:15
+ * @LastEditTime: 2022-01-26 14:44:43
  * @LastEditors: 阿匡
  * @Description: 原始地图
  * @FilePath: \vue2-ol-zkstudy\src\components\Map\Map2D\index.vue
@@ -52,6 +52,44 @@ export default {
             hightLightLayer:null,//高亮图层的数据
             isShowPopup:false,//控制弹窗是否显示
         }
+    },
+    activated(){
+      //当前路由组件被激活时候发生的事件
+      let data2D = [
+                {
+                    is2dMap:true,
+                    key:'addGeojson',
+                    id:'yqData',
+                    name:'GeoJson',
+                    checked:false
+                },
+                {
+                    is2dMap:true,
+                    key:'addXYZ',
+                    id:'tdtData',
+                    name:'影像',
+                    checked:false
+                },{
+                    is2dMap:true,
+                    key:'addWMTS',
+                    id:'zjData',
+                    name:'注记',
+                    checked:false 
+                },{
+                    is2dMap:true,
+                    key:'addCluster',
+                    id:'addesriClusterPoint',
+                    name:'聚合图',
+                    checked:false
+                },{
+                    is2dMap:true,
+                    key:'addHeatmap',
+                    id:'addesriHeatPoint',
+                    name:'热力图',
+                    checked:false
+                }
+            ]
+      this.$store.commit('setLayerData',data2D)
     },
     methods:{
         initMap(){
