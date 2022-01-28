@@ -1,7 +1,7 @@
 <!--
  * @Author: 阿匡
  * @Date: 2022-01-16 11:09:09
- * @LastEditTime: 2022-01-26 18:00:44
+ * @LastEditTime: 2022-01-28 15:23:34
  * @LastEditors: 阿匡
  * @Description: Cesium学习
  * @FilePath: \vue2-ol-zkstudy\src\components\Map\Map3D\index.vue
@@ -17,13 +17,13 @@
 <script>
 import ToolBar from '@/components/ToolBar'
 //引入过渡的混合
-import subscribeMixin from '@/components/Map/mixin/subscribeMixin'
-import executeMixin from '@/components/Map/mixin/executeMixin'
+import subscribe3DMixin from '@/components/Map/mixin/subscribe3DMixin'
+import execute3DMixin from '@/components/Map/mixin/execute3DMixin'
 //控制图层的方法
 import layer3dControl from'@/components/Map/mixin/layer3DControl'
 export default {
   name:'cesiumMap',
-  mixins:[subscribeMixin,executeMixin,layer3dControl],
+  mixins:[subscribe3DMixin,execute3DMixin,layer3dControl],
   data(){
     return{
       viewer:null,//三维视图窗体
@@ -45,7 +45,8 @@ export default {
           y:'23.22705',
           psName:'公司3'
         }
-      ]
+      ],
+      cartesian3:undefined
       
     }
   },
@@ -119,7 +120,88 @@ export default {
         // 定位到初始位置的过渡时间，设置成0，就没有过渡，类似一个过场的动画时长
         duration:0
       })
+
+      //点击显示气泡
+      const mouseClickHandler = new Cesium.ScreenSpaceEventHandler(this.viewer.scene.canvas)
+      mouseClickHandler.setInputAction(e=>{
+        this.initPopup(this.viewer)
+        const {position} =e
+        const html = `<div>
+           <div>位置</div>
+           <div>x:${position.x}</div>
+           <div>y:${position.y}</div>
+            </div>`
+          this.showInfo(position,html)
+      },Cesium.ScreenSpaceEventType.LEFT_CLICK)
     },
+    initPopup(viewer){
+      const Cesium = this.cesium
+      //初始化弹窗
+        const container = viewer.container
+        const popupContainer = document.createElement("div")
+        const html = '<div class="self-define-popup">' +
+            '<div class="self-define-popup-close-button">×</div>' +
+            '<div class="self-define-popup-content"></div>' +
+            '</div>'
+        popupContainer.innerHTML = html
+        container.appendChild(popupContainer)
+
+        //增加关闭弹窗时候的监听
+        const closeElement = document.getElementsByClassName("self-define-popup-close-button")
+        if(closeElement&&closeElement[0]){
+          //关闭弹窗时候的按钮
+          closeElement[0].onclick=()=>{
+            const elementPopup = document.getElementsByClassName("self-define-popup")
+            if(elementPopup&&elementPopup[0]){
+              //关闭弹窗的时候隐藏
+              elementPopup[0].style.display = 'none'
+              this.cartesian3 = undefined
+            }
+          }
+        }
+
+        //增加三维视图的监听
+        this.viewer.scene.postRender.addEventListener(()=>{
+          if(this.cartesian3){
+            const position = Cesium.SceneTransforms.wgs84ToWindowCoordinates(this.viewer.scene,this.cartesian3)
+            const elementPopup = document.getElementsByClassName('self-define-popup')
+              if(elementPopup&&elementPopup[0]){
+                //把弹窗显示出来
+                elementPopup[0].style.display='block'
+                const x = position.x-elementPopup[0].clientWidth/2
+                const y = position.y-elementPopup[0].clientHeight+35
+                elementPopup[0].style.left = `${x}px`
+                elementPopup[0].style.top = `${y}px`
+              }
+          }
+        })
+    },
+    showInfo(position,html){
+      //-----------------不知道这块是干嘛的------------------------------
+      const ray = this.viewer.camera.getPickRay(position);
+      this.cartesian3 = this.viewer.scene.globe.pick(ray, this.viewer.scene);
+      //-----------------不知道这块是干嘛的------------------------------
+
+      //得到弹窗的要素
+      const elementPopup = document.getElementsByClassName('self-define-popup')
+      if(elementPopup&&elementPopup[0]){
+        //把弹窗显示出来
+        elementPopup[0].style.display='block'
+        const x = position.x-elementPopup[0].clientWidth/2
+        const y = position.y-elementPopup[0].clientHeight+35
+        elementPopup[0].style.left = `${x}px`
+        elementPopup[0].style.top = `${y}px`
+      }
+      //弹窗内容
+      const elementPopupContent = document.getElementsByClassName("self-define-popup-content")
+      if(elementPopupContent&&elementPopupContent[0]){
+        elementPopupContent[0].innerHTML = ''
+        const popupContentContainer = document.createElement("div")
+        popupContentContainer.innerHTML = html
+        elementPopupContent[0].appendChild(popupContentContainer)
+      }
+
+    }
 
   },
   mounted(){
@@ -140,11 +222,4 @@ export default {
   overflow: hidden;
   }
 }
-// #cesiumContainer {
-//   width: 100%;
-//   height: 100%;
-//   margin: 0;
-//   padding: 0;
-//   overflow: hidden;
-// }
 </style>

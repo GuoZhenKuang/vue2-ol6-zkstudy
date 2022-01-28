@@ -1,7 +1,7 @@
 <!--
  * @Author: 阿匡
  * @Date: 2022-01-17 17:06:43
- * @LastEditTime: 2022-01-18 17:53:18
+ * @LastEditTime: 2022-01-27 15:08:34
  * @LastEditors: 阿匡
  * @Description: 清除功能
  * @FilePath: \vue2-ol-zkstudy\src\components\ToolBar\Clear\index.vue
@@ -17,13 +17,24 @@
 
 <script>
 import executeMixin from '@/components/Map/mixin/executeMixin'
+import execute3DMixin from '@/components/Map/mixin/execute3DMixin'
 export default {
     name:'clear',
-    mixins:[executeMixin],
+    mixins:[executeMixin,execute3DMixin],
+    computed: {
+        currentRoute(){
+            return this.$route.name
+        }
+    },
     methods:{
         clear(){
             // console.log("我是清除")
-            this.excuteMapMethod('allClear')
+            if(this.currentRoute=="Map2d"){
+                // console.log("我是当前的路由状态",this.currentRoute)
+                this.excuteMapMethod('allClear')
+            }else if(this.currentRoute=="Map3d"){
+                this.excute3DMapMethod('clearAllEntities')
+            }
         }
     }
 }

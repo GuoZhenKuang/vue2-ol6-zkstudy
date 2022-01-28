@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2022-01-12 18:01:20
- * @LastEditTime: 2022-01-26 14:21:57
+ * @LastEditTime: 2022-01-27 14:30:45
  * @LastEditors: 阿匡
  * @Description: 工具栏
  * @FilePath: \vue2-ol-zkstudy\src\components\ToolBar\index.vue
@@ -12,8 +12,8 @@
     <template v-if="$route.name=='Map2d'">
     <SimpleTool/>
     <Swipe/>
-    <Clear/>
     </template>
+      <Clear/>
   </div>
 </template>
 

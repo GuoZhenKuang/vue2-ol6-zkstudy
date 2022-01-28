@@ -1,7 +1,7 @@
 <!--
  * @Author: 阿匡
  * @Date: 2022-01-18 17:05:40
- * @LastEditTime: 2022-01-26 15:43:50
+ * @LastEditTime: 2022-01-27 14:58:54
  * @LastEditors: 阿匡
  * @Description: 图层控制功能
  * @FilePath: \vue2-ol-zkstudy\src\components\ToolBar\LayerControl\index.vue
@@ -32,9 +32,10 @@
 
 <script>
 import executeMixin from '@/components/Map/mixin/executeMixin'
+import execute3DMixin from '@/components/Map/mixin/execute3DMixin'
 export default {
     name:'layerControl',
-    mixins:[executeMixin],
+    mixins:[executeMixin,execute3DMixin],
     data() {
         return {
             showTool:false,
@@ -53,7 +54,7 @@ export default {
     watch:{
         allClear(){
             //监听用户是否点击了全部清除，如果全部清除则遍历清除所有的勾选按钮
-            this.optionTool.map(item=>{
+            this.dataOption.map(item=>{
                 item.checked=false
             })
         }
@@ -93,10 +94,10 @@ export default {
                 //三维数据加载
                 switch(item.key){
                     case "addSimulationPoint":
-                    this.excuteMapMethod('addSimulationPoint')
+                    this.excute3DMapMethod('addSimulationPoint')
                     break
                     case"addSimulationModel":
-                    this.excuteMapMethod('addSimulationModel')
+                    this.excute3DMapMethod('addSimulationModel')
                     break
                 }
             }            

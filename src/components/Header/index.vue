@@ -1,7 +1,7 @@
 <!--
  * @Author: 阿匡
  * @Date: 2022-01-15 12:02:31
- * @LastEditTime: 2022-01-25 10:19:58
+ * @LastEditTime: 2022-01-27 15:20:04
  * @LastEditors: 阿匡
  * @Description: 头部
  * @FilePath: \vue2-ol-zkstudy\src\components\Header\index.vue
@@ -35,6 +35,15 @@ export default {
       }
       ],
       activeMenu:'二维ol项目'
+    }
+  },
+  created(){
+    if(this.$route.name=="Map2d"){
+      this.activeMenu='二维ol项目'
+    }else if(this.$route.name=="Map3d"){
+      this.activeMenu='三维cesium项目'
+    }else{
+       this.activeMenu='Echart大屏设计'
     }
   },
   methods:{

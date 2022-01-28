@@ -1,7 +1,7 @@
 /*
  * @Author: 阿匡
  * @Date: 2022-01-10 15:59:03
- * @LastEditTime: 2022-01-25 10:07:15
+ * @LastEditTime: 2022-01-28 14:48:35
  * @LastEditors: 阿匡
  * @Description: 配置文件
  * @FilePath: \vue2-ol-zkstudy\vue.config.js
@@ -57,5 +57,6 @@ module.exports = {
                 },
             ]
         }
-    }
+    },
+    productionSourceMap:true
 }
