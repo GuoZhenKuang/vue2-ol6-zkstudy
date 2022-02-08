@@ -1,7 +1,7 @@
 <!--
  * @Author: 阿匡
  * @Date: 2022-01-15 12:02:31
- * @LastEditTime: 2022-01-27 15:20:04
+ * @LastEditTime: 2022-02-08 11:18:29
  * @LastEditors: 阿匡
  * @Description: 头部
  * @FilePath: \vue2-ol-zkstudy\src\components\Header\index.vue
@@ -29,9 +29,6 @@ export default {
       {
         key:'3d',
         name:'三维cesium项目'
-      },{
-        key:'Echart',
-        name:'Echart大屏设计'
       }
       ],
       activeMenu:'二维ol项目'

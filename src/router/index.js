@@ -1,7 +1,7 @@
 /*
  * @Author: 阿匡
  * @Date: 2022-01-05 21:48:52
- * @LastEditTime: 2022-01-26 14:19:03
+ * @LastEditTime: 2022-01-31 11:47:23
  * @LastEditors: 阿匡
  * @Description: 路由跳转界面
  * @FilePath: \vue2-ol-zkstudy\src\router\index.js
@@ -39,7 +39,10 @@ const routes = [
       },{
         path:'/SwipeMap',
         name:'SwipeMap',
-        component:()=>import('@/components/Map/SwipeMap')
+        component:()=>import('@/components/Map/SwipeMap'),
+        meta:{
+          keepAlive:true//判断是否缓存
+        }
       }
     ]
   },
