@@ -1,7 +1,7 @@
 /*
  * @Author: 阿匡
  * @Date: 2022-01-05 21:48:52
- * @LastEditTime: 2022-02-16 16:38:17
+ * @LastEditTime: 2022-02-16 17:19:16
  * @LastEditors: 阿匡
  * @Description: 路由跳转界面
  * @FilePath: \vue2-ol-zkstudy\src\router\index.js
@@ -52,6 +52,10 @@ const routes = [
     path:'/xfTest',
     name:'xfTest',
     component:()=>import('../views/xfTest.vue')
+  },{
+    path:'/login',
+    name:'login',
+    component:()=>import('@/components/login')
   }
 
 
