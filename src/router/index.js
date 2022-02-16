@@ -1,7 +1,7 @@
 /*
  * @Author: 阿匡
  * @Date: 2022-01-05 21:48:52
- * @LastEditTime: 2022-02-16 17:19:16
+ * @LastEditTime: 2022-02-16 19:18:26
  * @LastEditors: 阿匡
  * @Description: 路由跳转界面
  * @FilePath: \vue2-ol-zkstudy\src\router\index.js
@@ -16,7 +16,10 @@ const routes = [
   {
     path:'/',
     name:'Home',
-    component:()=>import('../views/Home.vue')
+    component:()=>import('../views/Home.vue'),
+    meta:{
+      requireAuth:true
+    }
   },
   {
     path: '/Screen',
@@ -46,7 +49,10 @@ const routes = [
           keepAlive:true//判断是否缓存
         }
       }
-    ]
+    ],
+    meta:{
+      requireAuth:true
+    }
   },
   {
     path:'/xfTest',
@@ -72,5 +78,18 @@ const routes = [
 const router = new VueRouter({
   routes
 })
-
+router.beforeEach((to,from,next)=>{
+  if(to.meta.requireAuth){
+    let userLogin = localStorage.getItem('akToken')
+    if(userLogin=='zk'||userLogin=='xf'){
+      next()
+    }else{
+      next({
+        path:'/login'
+      })
+    }
+  }else{
+    next()
+  }
+})
 export default router

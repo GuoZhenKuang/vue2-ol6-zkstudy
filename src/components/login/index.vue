@@ -1,7 +1,7 @@
 <!--
  * @Author: 阿匡
  * @Date: 2022-02-16 17:09:45
- * @LastEditTime: 2022-02-16 17:48:36
+ * @LastEditTime: 2022-02-16 19:13:53
  * @LastEditors: 阿匡
  * @Description: 登录页面
  * @FilePath: \vue2-ol-zkstudy\src\components\login\index.vue
@@ -26,7 +26,7 @@
       <div class="form_button" @click="login">
         <span>登 录</span>
       </div>
-    <div class="form_wrap_bg"></div>
+      <div class="form_wrap_bg"></div>
     </div>
   </div>
 </template>
@@ -43,6 +43,38 @@ export default {
   },
   components: {
     VideoBg,
+  },
+  methods: {
+    login() {
+      if (!this.userName) {
+        this.$message({
+          showClose: true,
+          message: "用户名不可以为空",
+          type: "warning",
+        });
+        return;
+      } else if (!this.password) {
+        this.$message({
+          showClose: true,
+          message: "密码不可以为空",
+          type: "warning",
+        });
+        return;
+      } else if (this.userName == "zk" && this.password == "zk") {
+        localStorage.setItem("akToken", this.userName);
+        this.$router.push("/");
+      } else if (this.userName == "xf" && this.password == "xf") {
+        localStorage.setItem("akToken", this.userName);
+        this.$router.push("/");
+      } else {
+        this.$message({
+          showClose: true,
+          message: "密码错误",
+          type: "warning",
+        });
+        return
+      }
+    },
   },
 };
 </script>
@@ -108,31 +140,31 @@ export default {
       color: #fff;
     }
   }
-  .form_button{
-          width: 90%;
+  .form_button {
+    width: 90%;
     height: 2rem /* 32/16 */;
     margin: 1.25rem /* 20/16 */ 5%;
     text-align: center;
     line-height: 2rem /* 32/16 */;
-    background: url('../../assets/homeImg/login_text_bg.png') no-repeat center
-        center;
+    background: url("../../assets/homeImg/login_text_bg.png") no-repeat center
+      center;
     background-size: 100% 100%;
-    border-radius: .25rem /* 4/16 */;
+    border-radius: 0.25rem /* 4/16 */;
     color: #fff;
     font-size: 1.125rem /* 18/16 */;
     cursor: pointer;
     overflow: hidden;
     display: inline-block;
   }
-  .form_wrap_bg{
+  .form_wrap_bg {
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
     z-index: -1;
-    background: url('../../assets/homeImg/nav_bg.png') center center;
-    background-size: 100% 100%;  
+    background: url("../../assets/homeImg/nav_bg.png") center center;
+    background-size: 100% 100%;
   }
 }
 </style>
