@@ -1,10 +1,10 @@
 <!--
  * @Author: 阿匡
  * @Date: 2022-01-18 17:05:40
- * @LastEditTime: 2022-01-27 14:58:54
+ * @LastEditTime: 2022-02-16 15:42:52
  * @LastEditors: 阿匡
  * @Description: 图层控制功能
- * @FilePath: \vue2-ol-zkstudy\src\components\ToolBar\LayerControl\index.vue
+ * @FilePath: \vue2-ol-zkstudy\src\components\zk-vue2-ol-cesium\ToolBar\LayerControl\index.vue
  * 仅为学习使用
 -->
 
@@ -31,8 +31,8 @@
 </template>
 
 <script>
-import executeMixin from '@/components/Map/mixin/executeMixin'
-import execute3DMixin from '@/components/Map/mixin/execute3DMixin'
+import executeMixin from '@/components/zk-vue2-ol-cesium/Map/mixin/executeMixin'
+import execute3DMixin from '@/components/zk-vue2-ol-cesium/Map/mixin/execute3DMixin'
 export default {
     name:'layerControl',
     mixins:[executeMixin,execute3DMixin],

@@ -1,26 +1,26 @@
 <!--
  * @Author: 阿匡
  * @Date: 2022-01-16 11:09:09
- * @LastEditTime: 2022-02-08 10:17:11
+ * @LastEditTime: 2022-02-16 15:39:07
  * @LastEditors: 阿匡
  * @Description: Cesium学习
- * @FilePath: \vue2-ol-zkstudy\src\components\Map\Map3D\index.vue
+ * @FilePath: \vue2-ol-zkstudy\src\components\zk-vue2-ol-cesium\Map\Map3D\index.vue
  * 仅为学习使用
 -->
 <template>
   <div class="box3d">
-    <ToolBar/>
+    <!-- <ToolBar/> -->
     <div id="cesiumContainer" class="cesiumView"></div>
   </div>
 </template>
 
 <script>
-import ToolBar from '@/components/ToolBar'
+import ToolBar from '@/components/zk-vue2-ol-cesium/ToolBar'
 //引入过渡的混合
-import subscribe3DMixin from '@/components/Map/mixin/subscribe3DMixin'
-import execute3DMixin from '@/components/Map/mixin/execute3DMixin'
+import subscribe3DMixin from '@/components/zk-vue2-ol-cesium/Map/mixin/subscribe3DMixin'
+import execute3DMixin from '@/components/zk-vue2-ol-cesium/Map/mixin/execute3DMixin'
 //控制图层的方法
-import layer3dControl from'@/components/Map/mixin/layer3DControl'
+import layer3dControl from'@/components/zk-vue2-ol-cesium/Map/mixin/layer3DControl'
 export default {
   name:'cesiumMap',
   mixins:[subscribe3DMixin,execute3DMixin,layer3dControl],
@@ -266,13 +266,14 @@ export default {
 
 <style scoped lang="scss">
 .box3d{
-  height: 90%;
   .cesiumView{
-  width: 100%;
-  height: 100%;
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+    z-index: -9;
+    top: 0.1rem;
   }
 }
 </style>

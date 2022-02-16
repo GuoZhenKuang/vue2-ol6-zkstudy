@@ -1,30 +1,28 @@
 /*
  * @Author: 阿匡
  * @Date: 2022-01-05 21:48:52
- * @LastEditTime: 2022-01-31 11:47:23
+ * @LastEditTime: 2022-02-16 15:46:56
  * @LastEditors: 阿匡
  * @Description: 路由跳转界面
  * @FilePath: \vue2-ol-zkstudy\src\router\index.js
  * @仅为学习使用
  */
 import Vue from 'vue'
-import axios from 'axios'  // 安装axios后引入
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
+import Screen from '../views/Screen.vue'
 
 Vue.use(VueRouter)
-Vue.prototype.$axios = axios  // 将axios挂载到原型上方便使用
 
 const routes = [
   {
     path: '/',
-    name: 'Home',
-    component: Home,
+    name: 'Screen',
+    component: Screen,
     children:[
       {
         path:'',
         name:'Map2d',
-        component:()=>import('@/components/Map/Map2D'),
+        component:()=>import('@/components/zk-vue2-ol-cesium/Map/Map2D'),
         meta:{
           keepAlive:true//判断是否缓存
         }
@@ -32,14 +30,14 @@ const routes = [
       {
         path:'/Map3d',
         name:'Map3d',
-        component:()=>import('@/components/Map/Map3D'),
+        component:()=>import('@/components/zk-vue2-ol-cesium/Map/Map3D'),
         meta:{
           keepAlive:true//判断是否缓存
         }
       },{
         path:'/SwipeMap',
         name:'SwipeMap',
-        component:()=>import('@/components/Map/SwipeMap'),
+        component:()=>import('@/components/zk-vue2-ol-cesium/Map/SwipeMap'),
         meta:{
           keepAlive:true//判断是否缓存
         }

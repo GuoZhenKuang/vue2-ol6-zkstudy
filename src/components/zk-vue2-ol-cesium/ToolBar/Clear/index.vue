@@ -1,10 +1,10 @@
 <!--
  * @Author: 阿匡
  * @Date: 2022-01-17 17:06:43
- * @LastEditTime: 2022-01-27 15:08:34
+ * @LastEditTime: 2022-02-16 15:42:44
  * @LastEditors: 阿匡
  * @Description: 清除功能
- * @FilePath: \vue2-ol-zkstudy\src\components\ToolBar\Clear\index.vue
+ * @FilePath: \vue2-ol-zkstudy\src\components\zk-vue2-ol-cesium\ToolBar\Clear\index.vue
  * 仅为学习使用
 -->
 <template>
@@ -16,8 +16,8 @@
 </template>
 
 <script>
-import executeMixin from '@/components/Map/mixin/executeMixin'
-import execute3DMixin from '@/components/Map/mixin/execute3DMixin'
+import executeMixin from '@/components/zk-vue2-ol-cesium/Map/mixin/executeMixin'
+import execute3DMixin from '@/components/zk-vue2-ol-cesium/Map/mixin/execute3DMixin'
 export default {
     name:'clear',
     mixins:[executeMixin,execute3DMixin],

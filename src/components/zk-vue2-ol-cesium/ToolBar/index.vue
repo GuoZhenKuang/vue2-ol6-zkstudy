@@ -1,10 +1,10 @@
 <!--
  * @Author: your name
  * @Date: 2022-01-12 18:01:20
- * @LastEditTime: 2022-01-27 14:30:45
+ * @LastEditTime: 2022-02-16 15:43:08
  * @LastEditors: 阿匡
  * @Description: 工具栏
- * @FilePath: \vue2-ol-zkstudy\src\components\ToolBar\index.vue
+ * @FilePath: \vue2-ol-zkstudy\src\components\zk-vue2-ol-cesium\ToolBar\index.vue
 -->
 <template>
   <div class="toolBar">
@@ -18,10 +18,10 @@
 </template>
 
 <script>
-import LayerControl from '@/components/ToolBar/LayerControl'
-import Swipe from '@/components/ToolBar/Swipe'
-import Clear from '@/components/ToolBar/Clear'
-import SimpleTool from '@/components/ToolBar/SimpleTool'
+import LayerControl from '@/components/zk-vue2-ol-cesium/ToolBar/LayerControl'
+import Swipe from '@/components/zk-vue2-ol-cesium/ToolBar/Swipe'
+import Clear from '@/components/zk-vue2-ol-cesium/ToolBar/Clear'
+import SimpleTool from '@/components/zk-vue2-ol-cesium/ToolBar/SimpleTool'
 export default {
   name:'ToolBar',
   data() {

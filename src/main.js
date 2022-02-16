@@ -1,7 +1,7 @@
 /*
  * @Author: 阿匡
  * @Date: 2022-01-05 21:48:52
- * @LastEditTime: 2022-01-28 10:22:38
+ * @LastEditTime: 2022-02-11 14:11:40
  * @LastEditors: 阿匡
  * @Description: 
  * @FilePath: \vue2-ol-zkstudy\src\main.js
@@ -12,17 +12,21 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import Element from 'element-ui'
+import axios from 'axios'  // 安装axios后引入
 import 'element-ui/lib/theme-chalk/index.css'
 import "ol/ol.css";
 // 公共样式
 import "@/style/body.scss";
 import "@/style/ol.scss"
+import "@/style/desinAnimate.scss"
 
 // 引入cesium相关文件
 const cesium = require("cesium/Cesium.js");
 const widgets = require("cesium//Widgets/widgets.css");
 Vue.prototype.cesium = cesium;
 Vue.prototype.widgets = widgets;
+
+Vue.prototype.$axios = axios  // 将axios挂载到原型上方便使用
 
 // elment-ui
 Vue.use(Element)

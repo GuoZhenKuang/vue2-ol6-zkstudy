@@ -1,22 +1,20 @@
 <!--
  * @Author: 阿匡
  * @Date: 2022-01-05 22:11:57
- * @LastEditTime: 2022-01-27 15:02:01
+ * @LastEditTime: 2022-02-16 15:44:17
  * @LastEditors: 阿匡
  * @Description: 原始地图
- * @FilePath: \vue2-ol-zkstudy\src\components\Map\Map2D\index.vue
+ * @FilePath: \vue2-ol-zkstudy\src\components\zk-vue2-ol-cesium\Map\Map2D\index.vue
  * 仅为学习使用
 -->
 <template>
-<div class="height100">
-<ToolBar/>
+<!-- <ToolBar/> -->
   <div id="map" class="map">
       <div id="popup" class="ol-popup" v-show="isShowPopup">
             <a href="#" id="popup-closer" class="ol-popup-closer"></a>
             <div id="popup-content" class="popup-content"></div>
       </div>
   </div>
-</div>
 </template>
 
 <script>
@@ -25,13 +23,13 @@ import { transform } from "ol/proj";
 import {TileArcGISRest} from "ol/source";
 import { Tile as TileLayer} from "ol/layer";
 //引入过渡的混合
-import subscribeMixin from '@/components/Map/mixin/subscribeMixin'
-import executeMixin from '@/components/Map/mixin/executeMixin'
+import subscribeMixin from '@/components/zk-vue2-ol-cesium/Map/mixin/subscribeMixin'
+import executeMixin from '@/components/zk-vue2-ol-cesium/Map/mixin/executeMixin'
 //引入调用工具的方法
-import drawControl from '@/components/Map/mixin/drawControl'
-import ToolBar from '@/components/ToolBar'
+import drawControl from '@/components/zk-vue2-ol-cesium/Map/mixin/drawControl'
+import ToolBar from '@/components/zk-vue2-ol-cesium/ToolBar'
 //控制图层的方法
-import layerControl from'@/components/Map/mixin/layerControl'
+import layerControl from'@/components/zk-vue2-ol-cesium/Map/mixin/layerControl'
 import DoubleClickZoom from 'ol/interaction/DoubleClickZoom';
 
 export default {
@@ -124,6 +122,13 @@ export default {
 </script>
 
 <style lang="scss" scope>
-#map{height:100%;}
-/*隐藏ol的一些自带元素*/
+.map{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+    z-index: -9;
+    top: .625rem /* 10/16 */;
+}
 </style>

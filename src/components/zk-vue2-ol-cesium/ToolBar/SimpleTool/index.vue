@@ -1,10 +1,10 @@
 <!--
  * @Author: 阿匡
  * @Date: 2022-01-13 11:36:14
- * @LastEditTime: 2022-01-18 17:18:40
+ * @LastEditTime: 2022-02-16 15:42:56
  * @LastEditors: 阿匡
  * @Description: 
- * @FilePath: \vue2-ol-zkstudy\src\components\ToolBar\SimpleTool\index.vue
+ * @FilePath: \vue2-ol-zkstudy\src\components\zk-vue2-ol-cesium\ToolBar\SimpleTool\index.vue
  * 仅为学习使用
 -->
 <template>
@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import executeMixin from '@/components/Map/mixin/executeMixin'
+import executeMixin from '@/components/zk-vue2-ol-cesium/Map/mixin/executeMixin'
 export default {
     name:'simpleTool',
     mixins:[executeMixin],
