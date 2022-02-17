@@ -1,7 +1,7 @@
 <!--
  * @Author: 阿匡
  * @Date: 2022-02-09 11:33:15
- * @LastEditTime: 2022-02-16 15:40:52
+ * @LastEditTime: 2022-02-17 16:10:49
  * @LastEditors: 阿匡
  * @Description: 左侧工具栏上边的表格数据
  * @FilePath: \vue2-ol-zkstudy\src\components\zk-vue2-ol-cesium\DataShow\LeftBox\LeftBoxTopTable\index.vue
@@ -33,10 +33,6 @@
             <font class="w_50">{{log.name}}</font>
             <font class="w_50"
             >新增确诊:{{log.newDiagnosis}}人</font>
-            <!-- <font
-            class="w_50"
-            v-else-if="log.type===1"
-            >液位预警：{{log.value}}cm</font> -->
         </div>
         <div class="table_time">
             <font class="w_50">{{log.time}}</font>
@@ -80,7 +76,6 @@ export default {
             //获取疫情数据并生成相应的展示数据
             //获取public的文件可以直接/去获取相应的文件夹
             this.$axios.get('/GeoJson/20220105-全国疫情数据.json').then(res=>{
-                console.log('我是res',res)
                 let allData = res.data.features
                 //清空当前展示的数据先，之后的数据从这里进行获取
                 // this.logList = []

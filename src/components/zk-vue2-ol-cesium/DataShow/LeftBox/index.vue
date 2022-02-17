@@ -1,7 +1,7 @@
 <!--
  * @Author: 阿匡
  * @Date: 2022-02-09 09:51:23
- * @LastEditTime: 2022-02-16 15:41:16
+ * @LastEditTime: 2022-02-17 18:02:35
  * @LastEditors: 阿匡
  * @Description: 左侧数据展示栏
  * @FilePath: \vue2-ol-zkstudy\src\components\zk-vue2-ol-cesium\DataShow\LeftBox\index.vue
@@ -42,9 +42,11 @@
     <!-- 上半部分的table数据加载 -->
     <LeftBoxTopTable/>
     <!-- 中间部分数据加载 -->
-    <LeftBoxMiddle/>
+    <LeftBoxMiddle @selectDetail="selectDetail"/>
     <!-- 下面部分数据滚动展示 -->
-    
+    <LeftBoxDownTable v-show="!showDetail" @getDetail="getDetail"/>
+    <!-- 详细数据展示 -->
+    <LeftBoxDetails v-show="showDetail" :detailInfo="detail" @exitDetail="exitDetail"/>
   </div>
 </template>
 
@@ -52,11 +54,15 @@
 import dayjs from 'dayjs'
 import LeftBoxTopTable from './LeftBoxTopTable'
 import LeftBoxMiddle from './LeftBoxMiddle'
+import LeftBoxDownTable from './LeftBoxDownTable'
+import LeftBoxDetails from './LeftBoxDetails'
 export default {
   name:'leftBox',
   components:{
     LeftBoxTopTable,
-    LeftBoxMiddle
+    LeftBoxMiddle,
+    LeftBoxDownTable,
+    LeftBoxDetails
   },
   created(){
     //定时，每秒改变时间的展示
@@ -66,8 +72,24 @@ export default {
     return {
       curTime:dayjs().format('HH:mm:ss'),
       curDate: dayjs().format('YYYY年MM月DD日'),
+      detail:{},
+      showDetail:false
     }
   },
+  methods:{
+    exitDetail(){
+      //退出展示详情方法
+      this.showDetail=false
+    },
+    getDetail(val){
+      this.showDetail = true
+      this.detail = val
+    },
+    selectDetail(item){
+      this.showDetail = true
+      this.detail = item
+    }
+  }
 }
 </script>
 
