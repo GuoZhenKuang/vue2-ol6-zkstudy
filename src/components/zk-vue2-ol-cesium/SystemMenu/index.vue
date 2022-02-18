@@ -1,7 +1,7 @@
 <!--
  * @Author: 阿匡
  * @Date: 2022-02-08 14:48:59
- * @LastEditTime: 2022-02-16 15:44:48
+ * @LastEditTime: 2022-02-17 18:12:15
  * @LastEditors: 阿匡
  * @Description: 工具菜单栏
  * @FilePath: \vue2-ol-zkstudy\src\components\zk-vue2-ol-cesium\SystemMenu\index.vue
@@ -44,8 +44,8 @@ export default {
       this.idCode = key
       if(key=='3d'){
         this.$router.push('Map3d')
-      }else{
-        this.$router.push('/')
+      }else if(key=='2d'){
+        this.$router.push('Screen')
       }
     }
     }

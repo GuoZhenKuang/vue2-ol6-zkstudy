@@ -1,7 +1,7 @@
 <!--
  * @Author: 阿匡
  * @Date: 2022-01-15 12:02:31
- * @LastEditTime: 2022-02-16 15:39:56
+ * @LastEditTime: 2022-02-18 10:20:46
  * @LastEditors: 阿匡
  * @Description: 头部
  * @FilePath: \vue2-ol-zkstudy\src\components\zk-vue2-ol-cesium\Header\index.vue
@@ -18,37 +18,11 @@ export default {
   name:"Header",
   data() {
     return {
-      moduleOption:[
-        {
-        key:'2d',
-        name:'二维ol项目'
-      },
-      {
-        key:'3d',
-        name:'三维cesium项目'
-      }
-      ],
-      activeMenu:'二维ol项目'
     }
   },
   created(){
-    if(this.$route.name=="Map2d"){
-      this.activeMenu='二维ol项目'
-    }else if(this.$route.name=="Map3d"){
-      this.activeMenu='三维cesium项目'
-    }else{
-       this.activeMenu='Echart大屏设计'
-    }
   },
   methods:{
-    menuChange(item){
-      this.activeMenu = item
-      if(item=='三维cesium项目'){
-        this.$router.push('Map3d')
-      }else{
-        this.$router.push('/')
-      }
-    }
   }
 
 }

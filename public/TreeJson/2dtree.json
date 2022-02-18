@@ -1,0 +1,61 @@
+{
+    "ResultType": null,
+    "ModelType": null,
+    "Data": [
+        {
+            "id": 11,
+            "pid": 1,
+            "title": "影像",
+            "code":"tdtData",
+            "loadWay":"addXYZ",
+            "is2dMap":true
+        },
+        {
+            "id": 12,
+            "pid": 1,
+            "title": "注记",
+            "code":"zjData",
+            "loadWay":"addWMTS",
+            "is2dMap":true
+        },{
+            "id":1,
+            "pid":null,
+            "title":"天地图数据",
+            "is2dMap":true
+        },{
+            "id":2,
+            "pid":null,
+            "title":"专题图数据",
+            "is2dMap":true
+        },{
+            "id":21,
+            "pid":2,
+            "title":"疫情数据",
+            "code":"yqData",
+            "loadWay":"addGeojson",
+            "is2dMap":true
+        },{
+            "id":22,
+            "pid":2,
+            "title":"聚合图",
+            "code":"addesriClusterPoint",
+            "loadWay":"addCluster",
+            "is2dMap":true
+        },
+        {
+            "id":23,
+            "pid":2,
+            "title":"热力图",
+            "code":"addesriHeatPoint",
+            "loadWay":"addHeatmap",
+            "is2dMap":true
+        }
+    ],
+    "MetaData": null,
+    "TotalCount": 116,
+    "Count": 116,
+    "MaxDateTime": null,
+    "ReturnCode": 0,
+    "Message": "操作成功。",
+    "Action": null
+}

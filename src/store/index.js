@@ -1,7 +1,7 @@
 /*
  * @Author: 阿匡
  * @Date: 2022-01-05 21:48:52
- * @LastEditTime: 2022-01-27 15:01:43
+ * @LastEditTime: 2022-02-18 17:50:09
  * @LastEditors: 阿匡
  * @Description: 
  * @FilePath: \vue2-ol-zkstudy\src\store\index.js
@@ -17,7 +17,7 @@ export default new Vuex.Store({
     executeMehod: [], // 执行的方法名称
     execute3DMehod: [],
     allClear:0,
-    layerData:[]//存放图层控制的数据
+    layerData:''//存放图层控制的数据
   },
   mutations: {
     setLayerData(state,data){

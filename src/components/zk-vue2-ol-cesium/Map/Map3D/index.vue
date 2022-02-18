@@ -1,7 +1,7 @@
 <!--
  * @Author: 阿匡
  * @Date: 2022-01-16 11:09:09
- * @LastEditTime: 2022-02-16 15:39:07
+ * @LastEditTime: 2022-02-18 17:50:10
  * @LastEditors: 阿匡
  * @Description: Cesium学习
  * @FilePath: \vue2-ol-zkstudy\src\components\zk-vue2-ol-cesium\Map\Map3D\index.vue
@@ -54,22 +54,7 @@ export default {
       ToolBar
     },
     activated(){
-      let data3DLayer = [
-        {
-          is2dMap:false,
-          key:'addSimulationPoint',
-          id:'simulationPoint',
-          name:'模拟点',
-          checked:false
-        },{
-          is2dMap:false,
-          key:'addSimulationModel',
-          id:'simulationModel',
-          name:'模拟三维模型',
-          checked:false
-        }
-      ]
-      this.$store.commit('setLayerData',data3DLayer)
+      this.$store.commit('setLayerData','3d')
     },
   methods:{
     /**

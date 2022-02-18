@@ -1,0 +1,35 @@
+{
+    "ResultType": null,
+    "ModelType": null,
+    "Data": [
+        {
+            "id": 11,
+            "pid": 1,
+            "title": "模型",
+            "code":"simulationModel",
+            "loadWay":"addSimulationModel",
+            "is2dMap":false
+        },
+        {
+            "id": 12,
+            "pid": 1,
+            "title": "点数据",
+            "code":"simulationPoint",
+            "loadWay":"addSimulationPoint",
+            "is2dMap":false
+        },
+        {
+            "id": 1,
+            "pid": null,
+            "title": "测试数据",
+            "is2dMap":false
+        }
+    ],
+    "MetaData": null,
+    "TotalCount": 116,
+    "Count": 116,
+    "MaxDateTime": null,
+    "ReturnCode": 0,
+    "Message": "操作成功。",
+    "Action": null
+}

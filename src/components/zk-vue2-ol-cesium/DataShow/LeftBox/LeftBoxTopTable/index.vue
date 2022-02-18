@@ -1,7 +1,7 @@
 <!--
  * @Author: 阿匡
  * @Date: 2022-02-09 11:33:15
- * @LastEditTime: 2022-02-17 16:10:49
+ * @LastEditTime: 2022-02-18 10:31:28
  * @LastEditors: 阿匡
  * @Description: 左侧工具栏上边的表格数据
  * @FilePath: \vue2-ol-zkstudy\src\components\zk-vue2-ol-cesium\DataShow\LeftBox\LeftBoxTopTable\index.vue
@@ -44,25 +44,11 @@
 </template>
 
 <script>
+import _ from 'lodash'
 import dayjs from 'dayjs'
 export default {
     name:'leftTopTable',
     created(){
-        //定时改变logList的数据
-        // setInterval(() => {
-        //     let obj = {
-        //         type: Math.round(Math.random()),
-        //         name: Math.round(Math.random() * 200) + '#作业罐',
-        //         value: Math.round(Math.random() * 80 + 30),
-        //         time: dayjs(
-        //             this.randomDate(new Date('2010-01-01 00:00:00'), new Date())
-        //         ).format('YYYY-MM-DD HH:mm:ss'),
-        //     }
-        //     //清除最后一个
-        //     this.logList.splice(this.logList.length-1,1)
-        //     //往最上面增加
-        //     this.logList.splice(0,0,obj)
-        // }, 3000);
         this.getEpidemicData()
     },
     data() {
@@ -72,7 +58,6 @@ export default {
     },
     methods:{
         getEpidemicData(){
-            let _this = this
             //获取疫情数据并生成相应的展示数据
             //获取public的文件可以直接/去获取相应的文件夹
             this.$axios.get('/GeoJson/20220105-全国疫情数据.json').then(res=>{
@@ -91,20 +76,18 @@ export default {
                 })
                 this.logList = this.getRandomArrayElements(newData,3)
                 setInterval(() => {
-                    let item = newData[Math.floor(Math.random()*newData.length)]
-                    _this.logList.map(logDataItem=>{
-                        if(logDataItem.name===item.name){
-                            item = newData[Math.floor(Math.random()*newData.length)]
-                        }
-                    })
-                    if(item){
-                        _this.logList.splice(_this.logList.length-1,1)
-                        _this.logList.splice(0,0,item)
+                    let item = _.sample(newData)
+                    if(_.includes(this.logList,item)){
+                        //如果已经有这个参数的话，则针对这个参数进行过滤
+                        let filterData = _.without(newData,item)
+                        item = _.sample(filterData)
+                        this.logList.splice(this.logList.length-1,1)
+                        this.logList.splice(0,0,item)
+                    }else{
+                        this.logList.splice(this.logList.length-1,1)
+                        this.logList.splice(0,0,item)
                     }
-
-
                 }, 3000);
-                // console.log("我是新的数据",newData)
             })
         },
         /**

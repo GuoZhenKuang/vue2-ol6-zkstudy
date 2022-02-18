@@ -1,7 +1,7 @@
 <!--
  * @Author: 阿匡
  * @Date: 2022-02-08 15:26:26
- * @LastEditTime: 2022-02-16 15:40:07
+ * @LastEditTime: 2022-02-18 10:44:17
  * @LastEditors: 阿匡
  * @Description: 大屏左右侧展示数据及设置相应的遮罩
  * @FilePath: \vue2-ol-zkstudy\src\components\zk-vue2-ol-cesium\DataShow\index.vue
@@ -18,15 +18,18 @@
         <LeftBox/>
       <!-- 放置存放地图的插槽 -->
       <slot name="showMap"></slot>
+      <RightBox/>
   </div>
 </template>
 
 <script>
+import RightBox from './RightBox'
 import LeftBox from './LeftBox'
 export default {
   name:'dataShowBackGround',
   components:{
-      LeftBox
+      LeftBox,
+      RightBox
   },
   data() {
     return {
