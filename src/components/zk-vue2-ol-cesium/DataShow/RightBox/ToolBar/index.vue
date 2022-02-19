@@ -1,7 +1,7 @@
 <!--
  * @Author: 阿匡
  * @Date: 2022-02-19 14:38:05
- * @LastEditTime: 2022-02-19 16:37:13
+ * @LastEditTime: 2022-02-19 16:49:51
  * @LastEditors: 阿匡
  * @Description: 工具栏展示
  * @FilePath: \vue2-ol-zkstudy\src\components\zk-vue2-ol-cesium\DataShow\RightBox\ToolBar\index.vue
@@ -14,10 +14,10 @@
     </div>
     <transition name="tool">
       <div class="allToolBar" v-show="showTool">
-        <div class="measure" @click="measureDistance">
+        <div v-show="show2dTool" class="measure" @click="measureDistance">
           <img :src="showMeasure" alt="量测" />
         </div>
-        <div class="measureSurface" @click="measureSurface">
+        <div v-show="show2dTool" class="measureSurface" @click="measureSurface">
           <img :src="showMeasureSurface" alt="测面" />
         </div>
         <div class="full" @click="full">
@@ -46,11 +46,24 @@ export default {
       clearSrc: require("../../../../../assets/toolImg/清除.png"),
       fullSrc:require("../../../../../assets/toolImg/全图显示.png"),
       showTool: false,
+      show2dTool:true
     };
   },
   computed: {
     currentRoute() {
       return this.$route.name;
+    },
+        show2dor3d() {
+      return this.$store.state.layerData;
+    },
+  },
+  watch:{
+    show2dor3d(val) {
+      if (val == "2d") {
+        this.show2dTool = true
+      } else if (val == "3d") {
+        this.show2dTool = false
+      }
     },
   },
   methods: {
