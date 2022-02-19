@@ -1,7 +1,7 @@
 <!--
  * @Author: 阿匡
  * @Date: 2022-02-18 10:36:55
- * @LastEditTime: 2022-02-18 17:52:25
+ * @LastEditTime: 2022-02-19 16:20:19
  * @LastEditors: 阿匡
  * @Description: 图层控制展示
  * @FilePath: \vue2-ol-zkstudy\src\components\zk-vue2-ol-cesium\DataShow\RightBox\LayerControl\index.vue
@@ -56,8 +56,19 @@ export default {
     show2dor3d() {
       return this.$store.state.layerData;
     },
+    allClear() {
+      //是否全部清除
+      return this.$store.state.allClear;
+    },
   },
   watch: {
+    allClear() {
+      //监听用户是否点击了全部清除，如果全部清除则遍历清除所有的勾选按钮
+      // this.dataOption.map((item) => {
+      //   item.checked = false;
+      // });
+      this.$refs.tree.setCheckedKeys([])
+    },
     show2dor3d(val) {
       if (val == "2d") {
         this.get2dTreeData();
@@ -96,12 +107,15 @@ export default {
           //三维数据加载
           switch (checkedNodes.loadWay) {
             case "addSimulationPoint":
-              this.excute3DMapMethod("addSimulationPoint");
+              this.excute3DMapMethod("addSimulationPoint",checkedNodes.data);
               break;
             case "addSimulationModel":
-              this.excute3DMapMethod("addSimulationModel");
+              this.excute3DMapMethod("addSimulationModel",checkedNodes.data);
               break;
           }
+        }else{
+          //三维数据取消
+           this.excute3DMapMethod("clearEntity",checkedNodes.data);
         }
       }
     },

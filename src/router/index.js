@@ -1,7 +1,7 @@
 /*
  * @Author: 阿匡
  * @Date: 2022-01-05 21:48:52
- * @LastEditTime: 2022-02-17 18:12:17
+ * @LastEditTime: 2022-02-19 14:24:13
  * @LastEditors: 阿匡
  * @Description: 路由跳转界面
  * @FilePath: \vue2-ol-zkstudy\src\router\index.js
@@ -25,9 +25,10 @@ const routes = [
     path: '/Screen',
     name: 'Screen',
     component: ()=>import('../views/Screen.vue'),
+    redirect:'/Map2d',
     children:[
       {
-        path:'',
+        path:'/Map2d',
         name:'Map2d',
         component:()=>import('@/components/zk-vue2-ol-cesium/Map/Map2D'),
         meta:{

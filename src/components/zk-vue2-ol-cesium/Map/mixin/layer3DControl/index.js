@@ -1,10 +1,10 @@
 /*
  * @Author: 阿匡
  * @Date: 2022-01-26 14:40:47
- * @LastEditTime: 2022-01-31 12:12:30
+ * @LastEditTime: 2022-02-19 14:19:47
  * @LastEditors: 阿匡
  * @Description: 存放三维数据的方法
- * @FilePath: \vue2-ol-zkstudy\src\components\Map\mixin\layer3DControl\index.js
+ * @FilePath: \vue2-ol-zkstudy\src\components\zk-vue2-ol-cesium\Map\mixin\layer3DControl\index.js
  * @仅为学习使用
  */
 
@@ -22,13 +22,13 @@ export default {
          * @param {*}
          * @return {*}
          */
-        addSimulationPoint(){
+        addSimulationPoint(data){
           let _this = this
            const Cesium = _this.cesium
            //消除上一次的点位
            _this.viewer.entities.removeAll()
             //循环加载新的点位数据
-            _this.simulatePointData.forEach(pointObj=>{
+            data.map(pointObj=>{
                 this.viewer.entities.add({
                   name:pointObj.psName,
                   id:pointObj.id,
@@ -91,24 +91,33 @@ export default {
             // },Cesium.ScreenSpaceEventType.LEFT_CLICK)
 
         },
-        addSimulationModel(){
+        addSimulationModel(data){
             const Cesium = this.cesium
-            //增加实体模型
-            const blueBox = {
-                name:'blueBox',
-                position:Cesium.Cartesian3.fromDegrees(113.27599,23.11705, 50),
-                box:{
-                    // new Cesium.Cartesian3(长, width, height)
-                    dimensions: new Cesium.Cartesian3(40.0, 100.0, 150.0),
-                    material: Cesium.Color.BLUE, // 配置颜色
-                    // material: Cesium.Color.RED.withAlpha(0.5), // 配置颜色透明度
-                    // fill: false, // 配置 是否填满
-                    // outline: true, // 配置 是否显示外边框线
-                    // outlineColor: Cesium.Color.YELLOW, // 配置 设置外边框线颜色
-                }
-            }
-            this.viewer.entities.add(blueBox)
-            this.viewer.zoomTo(this.viewer.entities)
+            data.map(item=>{
+              //增加实体模型
+              const blueBox = {
+                  id:item.id,
+                  name:item.name,
+                  position:Cesium.Cartesian3.fromDegrees(113.27599,23.11705, 50),
+                  box:{
+                      // new Cesium.Cartesian3(长, width, height)
+                      dimensions: new Cesium.Cartesian3(40.0, 100.0, 150.0),
+                      material: Cesium.Color.BLUE, // 配置颜色
+                      // material: Cesium.Color.RED.withAlpha(0.5), // 配置颜色透明度
+                      // fill: false, // 配置 是否填满
+                      // outline: true, // 配置 是否显示外边框线
+                      // outlineColor: Cesium.Color.YELLOW, // 配置 设置外边框线颜色
+                  }
+              }
+              this.viewer.entities.add(blueBox)
+              this.viewer.zoomTo(this.viewer.entities)
+            })
+        },
+        clearEntity(data){
+          data.forEach(item=>{
+            let entitiesId = this.viewer.entities.getById(item.id)
+            this.viewer.entities.remove(entitiesId)
+          })
         },
         clearAllEntities(){
           this.viewer.entities.removeAll()

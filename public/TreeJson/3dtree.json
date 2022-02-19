@@ -8,7 +8,12 @@
             "title": "模型",
             "code":"simulationModel",
             "loadWay":"addSimulationModel",
-            "is2dMap":false
+            "is2dMap":false,
+            "data":[{
+                "id" : "模型测试数据",
+                "name" : "模型测试数据"
+            }
+            ]
         },
         {
             "id": 12,
@@ -16,7 +21,27 @@
             "title": "点数据",
             "code":"simulationPoint",
             "loadWay":"addSimulationPoint",
-            "is2dMap":false
+            "is2dMap":false,
+            "data":[
+                {
+                  "id": "01",
+                  "x": "113.27599",
+                  "y": "23.11705",
+                  "psName": "公司1"
+                },
+                {
+                  "id": "02",
+                  "x": "113.37599",
+                  "y": "23.12705",
+                  "psName": "公司2"
+                },
+                {
+                  "id": "03",
+                  "x": "113.17599",
+                  "y": "23.22705",
+                  "psName": "公司3"
+                }
+              ]
         },
         {
             "id": 1,

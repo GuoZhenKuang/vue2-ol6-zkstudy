@@ -1,7 +1,7 @@
 <!--
  * @Author: 阿匡
  * @Date: 2022-01-16 11:09:09
- * @LastEditTime: 2022-02-18 17:50:10
+ * @LastEditTime: 2022-02-19 13:24:12
  * @LastEditors: 阿匡
  * @Description: Cesium学习
  * @FilePath: \vue2-ol-zkstudy\src\components\zk-vue2-ol-cesium\Map\Map3D\index.vue
@@ -27,25 +27,6 @@ export default {
   data(){
     return{
       viewer:null,//三维视图窗体
-      //模拟点的数据
-      simulatePointData:[
-        {
-          id:'01',
-          x:'113.27599',
-          y:'23.11705',
-          psName:'公司1'
-        },{
-          id:'02',
-          x:'113.37599',
-          y:'23.12705',
-          psName:'公司2'
-        },{
-          id:'03',
-          x:'113.17599',
-          y:'23.22705',
-          psName:'公司3'
-        }
-      ],
       cartesian3:undefined
       
     }
