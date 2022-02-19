@@ -1,7 +1,7 @@
 <!--
  * @Author: 阿匡
  * @Date: 2022-02-19 14:38:05
- * @LastEditTime: 2022-02-19 16:14:26
+ * @LastEditTime: 2022-02-19 16:37:13
  * @LastEditors: 阿匡
  * @Description: 工具栏展示
  * @FilePath: \vue2-ol-zkstudy\src\components\zk-vue2-ol-cesium\DataShow\RightBox\ToolBar\index.vue
@@ -19,6 +19,9 @@
         </div>
         <div class="measureSurface" @click="measureSurface">
           <img :src="showMeasureSurface" alt="测面" />
+        </div>
+        <div class="full" @click="full">
+          <img :src="fullSrc" alt="全图" />
         </div>
         <div class="clear" @click="clearAll">
           <img :src="clearSrc" alt="清除" />
@@ -41,6 +44,7 @@ export default {
       showMeasure: require("../../../../../assets/toolImg/测量.png"),
       showMeasureSurface: require("../../../../../assets/toolImg/测面.png"),
       clearSrc: require("../../../../../assets/toolImg/清除.png"),
+      fullSrc:require("../../../../../assets/toolImg/全图显示.png"),
       showTool: false,
     };
   },
@@ -50,12 +54,15 @@ export default {
     },
   },
   methods: {
-      measureSurface(){
-          this.excuteMapMethod('drawMeasure','Polygon')
+      full(){
+        this.excuteMapMethod("full");
       },
-      measureDistance(){
-          this.excuteMapMethod('drawMeasure','LineString')
-      },
+    measureSurface() {
+      this.excuteMapMethod("drawMeasure", "Polygon");
+    },
+    measureDistance() {
+      this.excuteMapMethod("drawMeasure", "LineString");
+    },
     clearAll() {
       if (this.currentRoute == "Map2d") {
         // console.log("我是当前的路由状态",this.currentRoute)
@@ -100,6 +107,14 @@ export default {
     .clear {
       float: right;
       margin-right: 1.25rem /* 20/16 */;
+      &:hover {
+        cursor: pointer;
+      }
+    }
+    .full {
+      float: right;
+      margin-right: 1.25rem /* 20/16 */;
+      margin-top: .25rem /* 4/16 */;
       &:hover {
         cursor: pointer;
       }

@@ -1,10 +1,10 @@
 /*
  * @Author: 阿匡
  * @Date: 2022-01-17 17:45:14
- * @LastEditTime: 2022-01-24 14:40:38
+ * @LastEditTime: 2022-02-19 16:44:45
  * @LastEditors: 阿匡
  * @Description: 控制图层
- * @FilePath: \vue2-ol-zkstudy\src\components\Map\mixin\layerControl\index.js
+ * @FilePath: \vue2-ol-zkstudy\src\components\zk-vue2-ol-cesium\Map\mixin\layerControl\index.js
  * @仅为学习使用
  */
 import {Vector as VectorLayer,Heatmap as HeatmapLayer} from "ol/layer";
@@ -21,6 +21,7 @@ import {createEmpty,extend,getWidth,getHeight,getTopLeft} from 'ol/extent';
 //esrijson转换成geojson
 import { arcgisToGeoJSON } from '@esri/arcgis-to-geojson-utils';
 // import { geojsonToArcGIS } from '@esri/arcgis-to-geojson-utils';
+import { transform } from "ol/proj";
 export default {
     data() {
         return {
@@ -656,6 +657,10 @@ export default {
                 })
             }
 
+        },
+        full(){
+          this.ol2dmap.getView().setCenter(transform([114,38],'EPSG:4326','EPSG:3857'))
+          this.ol2dmap.getView().setZoom(4.5)
         }
     },
 }
