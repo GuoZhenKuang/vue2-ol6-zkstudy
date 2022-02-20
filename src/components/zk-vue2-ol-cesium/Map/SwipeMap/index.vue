@@ -1,10 +1,10 @@
 <!--
  * @Author: 阿匡
  * @Date: 2022-01-19 20:17:40
- * @LastEditTime: 2022-01-31 11:48:04
+ * @LastEditTime: 2022-02-20 15:25:40
  * @LastEditors: 阿匡
  * @Description: 卷帘使用的地图
- * @FilePath: \vue2-ol-zkstudy\src\components\Map\SwipeMap\index.vue
+ * @FilePath: \vue2-ol-zkstudy\src\components\zk-vue2-ol-cesium\Map\SwipeMap\index.vue
  * 仅为学习使用
 -->
 <template>
@@ -21,7 +21,7 @@
 <script>
 import { Map, View } from "ol";
 import { transform } from "ol/proj";
-import {XYZ} from "ol/source";
+import {XYZ,TileArcGISRest} from "ol/source";
 import { Tile as TileLayer} from "ol/layer";
 export default {
     name:'swipeLayer',
@@ -41,10 +41,13 @@ export default {
             //必应地图矢量
             let imageLayer = new TileLayer({
                 id:'yxtdt',
-                source: new XYZ({
-                  url:'http://t0.tianditu.com/DataServer?T=img_w&x={x}&y={y}&l={z}&tk='+ TDTkey
-                }),
-                name: "影像天地图"
+                // source: new XYZ({
+                //   url:'http://t0.tianditu.com/DataServer?T=img_w&x={x}&y={y}&l={z}&tk='+ TDTkey
+                // }),
+                // name: "影像天地图"
+                source: new TileArcGISRest({
+                  url:"http://map.geoq.cn/arcgis/rest/services/ChinaOnlineStreetPurplishBlue/MapServer"
+                })
             })
             let vecLayer = new TileLayer({
                 id: 'sltdt',
@@ -61,8 +64,8 @@ export default {
                     zoom: 4.5                    
                 }),
                 layers:[
-                   vecLayer,
-                    imageLayer
+                  imageLayer,
+                   vecLayer
                 ]
             })
             return map
@@ -126,7 +129,7 @@ export default {
             });
             },
         exitSwipe(){
-          this.$router.push('/')
+          this.$router.push('Screen')
         }        
         },
 
@@ -213,8 +216,8 @@ export default {
     .exit{
       user-select: none;
       position: absolute;
-      top: 50px;
-      left: 50px;
+      top: 12px;
+      left: 423px;
       z-index: 100;
       width: 80px;
       height: 30px;

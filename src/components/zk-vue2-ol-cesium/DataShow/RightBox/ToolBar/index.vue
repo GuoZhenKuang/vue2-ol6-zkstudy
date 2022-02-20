@@ -1,7 +1,7 @@
 <!--
  * @Author: 阿匡
  * @Date: 2022-02-19 14:38:05
- * @LastEditTime: 2022-02-19 16:49:51
+ * @LastEditTime: 2022-02-20 15:30:09
  * @LastEditors: 阿匡
  * @Description: 工具栏展示
  * @FilePath: \vue2-ol-zkstudy\src\components\zk-vue2-ol-cesium\DataShow\RightBox\ToolBar\index.vue
@@ -22,6 +22,9 @@
         </div>
         <div class="full" @click="full">
           <img :src="fullSrc" alt="全图" />
+        </div>
+        <div class="swipe" v-show="show2dTool" @click="swipe">
+          <img :src="swipeSrc" alt="卷帘" />
         </div>
         <div class="clear" @click="clearAll">
           <img :src="clearSrc" alt="清除" />
@@ -44,32 +47,36 @@ export default {
       showMeasure: require("../../../../../assets/toolImg/测量.png"),
       showMeasureSurface: require("../../../../../assets/toolImg/测面.png"),
       clearSrc: require("../../../../../assets/toolImg/清除.png"),
-      fullSrc:require("../../../../../assets/toolImg/全图显示.png"),
+      fullSrc: require("../../../../../assets/toolImg/全图显示.png"),
+      swipeSrc: require("../../../../../assets/toolImg/卷帘.png"),
       showTool: false,
-      show2dTool:true
+      show2dTool: true,
     };
   },
   computed: {
     currentRoute() {
       return this.$route.name;
     },
-        show2dor3d() {
+    show2dor3d() {
       return this.$store.state.layerData;
     },
   },
-  watch:{
+  watch: {
     show2dor3d(val) {
       if (val == "2d") {
-        this.show2dTool = true
+        this.show2dTool = true;
       } else if (val == "3d") {
-        this.show2dTool = false
+        this.show2dTool = false;
       }
     },
   },
   methods: {
-      full(){
-        this.excuteMapMethod("full");
-      },
+    swipe() {
+      this.$router.push("SwipeMap");
+    },
+    full() {
+      this.excuteMapMethod("full");
+    },
     measureSurface() {
       this.excuteMapMethod("drawMeasure", "Polygon");
     },
@@ -127,7 +134,16 @@ export default {
     .full {
       float: right;
       margin-right: 1.25rem /* 20/16 */;
-      margin-top: .25rem /* 4/16 */;
+      margin-top: 0.25rem /* 4/16 */;
+      &:hover {
+        cursor: pointer;
+      }
+    }
+    .swipe {
+      float: right;
+      margin-right: 1.25rem /* 20/16 */;
+      position: relative;
+      bottom: .4375rem /* 7/16 */;
       &:hover {
         cursor: pointer;
       }
