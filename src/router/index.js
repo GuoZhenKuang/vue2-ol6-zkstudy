@@ -1,7 +1,7 @@
 /*
  * @Author: 阿匡
  * @Date: 2022-01-05 21:48:52
- * @LastEditTime: 2022-02-19 14:24:13
+ * @LastEditTime: 2022-03-01 10:27:59
  * @LastEditors: 阿匡
  * @Description: 路由跳转界面
  * @FilePath: \vue2-ol-zkstudy\src\router\index.js
@@ -59,6 +59,14 @@ const routes = [
     path:'/xfTest',
     name:'xfTest',
     component:()=>import('../views/xfTest.vue')
+  },{
+    path:'/OlDemosHome',
+    name:'OlDemosHome',
+    component:()=>import('../views/OlDemosHome.vue') 
+  },{
+    path:'/CesiumDemosHome',
+    name:'CesiumDemosHome',
+    component:()=>import('../views/CesiumDemosHome.vue') 
   },{
     path:'/login',
     name:'login',

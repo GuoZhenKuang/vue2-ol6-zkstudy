@@ -1,7 +1,7 @@
 <!--
  * @Author: 阿匡
  * @Date: 2022-02-19 14:38:05
- * @LastEditTime: 2022-02-20 15:30:09
+ * @LastEditTime: 2022-03-01 10:13:54
  * @LastEditors: 阿匡
  * @Description: 工具栏展示
  * @FilePath: \vue2-ol-zkstudy\src\components\zk-vue2-ol-cesium\DataShow\RightBox\ToolBar\index.vue
@@ -14,13 +14,13 @@
     </div>
     <transition name="tool">
       <div class="allToolBar" v-show="showTool">
-        <div v-show="show2dTool" class="measure" @click="measureDistance">
+        <div class="measure" @click="measureDistance">
           <img :src="showMeasure" alt="量测" />
         </div>
         <div v-show="show2dTool" class="measureSurface" @click="measureSurface">
           <img :src="showMeasureSurface" alt="测面" />
         </div>
-        <div class="full" @click="full">
+        <div v-show="show2dTool" class="full" @click="full">
           <img :src="fullSrc" alt="全图" />
         </div>
         <div class="swipe" v-show="show2dTool" @click="swipe">
@@ -81,7 +81,11 @@ export default {
       this.excuteMapMethod("drawMeasure", "Polygon");
     },
     measureDistance() {
-      this.excuteMapMethod("drawMeasure", "LineString");
+      if(this.show2dor3d=='2d'){
+        this.excuteMapMethod("drawMeasure", "LineString");
+      }else{
+        console.log('我是3d得量测')
+      }
     },
     clearAll() {
       if (this.currentRoute == "Map2d") {

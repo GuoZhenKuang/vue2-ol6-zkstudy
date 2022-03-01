@@ -1,7 +1,7 @@
 <!--
  * @Author: 阿匡
  * @Date: 2022-02-16 16:00:34
- * @LastEditTime: 2022-02-20 15:44:58
+ * @LastEditTime: 2022-03-01 10:28:36
  * @LastEditors: 阿匡
  * @Description: 首页展示
  * @FilePath: \vue2-ol-zkstudy\src\components\home\index.vue
@@ -52,7 +52,17 @@ export default {
           url: "xfTest",
           label: "Test",
           icon: "el-icon-eleme",
-        },
+        },{
+          id:3,
+          url:'OlDemosHome',
+          label:'Ol中demo集合',
+          icon:'el-icon-s-tools'
+        },{
+          id:4,
+          url:'CesiumDemosHome',
+          label:'Cesium中demo集合',
+          icon:'el-icon-s-home'
+        }
       ],
     };
   },

@@ -1,7 +1,7 @@
 <!--
  * @Author: 阿匡
  * @Date: 2022-01-05 21:48:52
- * @LastEditTime: 2022-02-16 15:55:02
+ * @LastEditTime: 2022-03-01 10:31:37
  * @LastEditors: 阿匡
  * @Description: 大屏界面
  * @FilePath: \vue2-ol-zkstudy\src\views\Screen.vue
@@ -27,7 +27,6 @@
 import Header from '@/components/zk-vue2-ol-cesium/Header'
 import SystemMenus from '@/components/zk-vue2-ol-cesium/SystemMenu'
 import DataShow from '@/components/zk-vue2-ol-cesium/DataShow'
-import Map from '@/components/zk-vue2-ol-cesium/Map/Map2D'
 
 export default {
   name: 'Screen',

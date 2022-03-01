@@ -1,7 +1,7 @@
 <!--
  * @Author: 阿匡
  * @Date: 2022-01-13 11:36:14
- * @LastEditTime: 2022-02-16 15:42:56
+ * @LastEditTime: 2022-03-01 14:56:13
  * @LastEditors: 阿匡
  * @Description: 
  * @FilePath: \vue2-ol-zkstudy\src\components\zk-vue2-ol-cesium\ToolBar\SimpleTool\index.vue
@@ -9,7 +9,6 @@
 -->
 <template>
   <div class="simpleTool" @mouseover="onCurrentToolEnter" >
-    <span style="padding:0 8px 0 0 ">|</span>
     <i class="el-icon-s-tools" style="padding:0 3px 0 0 "/>
     <span class="show-tool">
         <span class="useTool">测量工具</span>
@@ -31,7 +30,7 @@
 </template>
 
 <script>
-import executeMixin from '@/components/zk-vue2-ol-cesium/Map/mixin/executeMixin'
+import executeMixin from '@/components/olDemos/Map2D/mixin/executeMixin'
 export default {
     name:'simpleTool',
     mixins:[executeMixin],

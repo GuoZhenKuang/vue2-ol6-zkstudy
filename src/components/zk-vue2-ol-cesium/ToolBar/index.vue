@@ -1,35 +1,28 @@
 <!--
  * @Author: your name
  * @Date: 2022-01-12 18:01:20
- * @LastEditTime: 2022-02-16 15:43:08
+ * @LastEditTime: 2022-03-01 14:45:02
  * @LastEditors: 阿匡
  * @Description: 工具栏
  * @FilePath: \vue2-ol-zkstudy\src\components\zk-vue2-ol-cesium\ToolBar\index.vue
 -->
 <template>
   <div class="toolBar">
-    <LayerControl/>
-    <template v-if="$route.name=='Map2d'">
     <SimpleTool/>
-    <Swipe/>
-    </template>
-      <Clear/>
+    <Clear/>
   </div>
 </template>
 
 <script>
-import LayerControl from '@/components/zk-vue2-ol-cesium/ToolBar/LayerControl'
-import Swipe from '@/components/zk-vue2-ol-cesium/ToolBar/Swipe'
 import Clear from '@/components/zk-vue2-ol-cesium/ToolBar/Clear'
 import SimpleTool from '@/components/zk-vue2-ol-cesium/ToolBar/SimpleTool'
 export default {
   name:'ToolBar',
   data() {
     return {
-      activedRoute:''
     }
   },
-  components:{SimpleTool,Clear,LayerControl,Swipe},
+  components:{SimpleTool,Clear},
 
 }
 </script>
